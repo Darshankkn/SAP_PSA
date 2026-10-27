@@ -1,0 +1,139 @@
+
+/* ==========================================
+   PSA DASHBOARD HUB
+   ========================================== */
+
+.psaHubPage,
+.psaHubPage .sapMPageBgStandard {
+    background: #f3f6fa;
+}
+
+/* Page content */
+.psaHubContent {
+    box-sizing: border-box;
+    padding: 4rem 2rem 3rem;
+}
+
+/* Main heading */
+.psaHubTitle {
+    color: #183451;
+    font-size: 2rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 0.75rem;
+}
+
+/* Subtitle */
+.psaHubSubtitle {
+    color: #64748b;
+    font-size: 1rem;
+    text-align: center;
+    margin-bottom: 2.75rem;
+}
+
+/* Cards row */
+.psaHubCards {
+    max-width: 1100px;
+    gap: 1.5rem;
+    box-sizing: border-box;
+    padding: 0.5rem;
+}
+
+/* Individual dashboard cards */
+.psaHubCard {
+    box-sizing: border-box;
+    min-height: 250px;
+    padding: 2rem 1.5rem 1.5rem;
+    margin: 0.25rem;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    box-shadow: 0 5px 18px rgba(24, 52, 81, 0.06);
+    transition: box-shadow 0.2s ease,
+                border-color 0.2s ease,
+                transform 0.2s ease;
+}
+
+/* Card icon */
+.psaHubIcon {
+    margin-bottom: 1rem;
+}
+
+/* Card heading */
+.psaHubCardTitle {
+    color: #183451;
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 0.65rem;
+}
+
+/* Card description */
+.psaHubCardText {
+    color: #64748b;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    min-height: 2.75rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Action button */
+.psaHubButton {
+    margin-top: auto;
+}
+
+.psaHubButton .sapMBtnInner {
+    min-height: 2.75rem;
+    height: auto;
+    border-radius: 7px;
+    font-weight: 600;
+}
+
+/* Hover effect for desktop */
+@media (hover: hover) {
+    .psaHubCard:hover {
+        border-color: #b7cbdc;
+        box-shadow: 0 10px 28px rgba(24, 52, 81, 0.12);
+        transform: translateY(-3px);
+    }
+}
+
+/* Tablet and mobile */
+@media (max-width: 900px) {
+    .psaHubContent {
+        padding: 3rem 1.25rem 2rem;
+    }
+
+    .psaHubCards {
+        max-width: 650px;
+    }
+
+    .psaHubCard {
+        width: 17rem !important;
+    }
+}
+
+@media (max-width: 600px) {
+    .psaHubContent {
+        padding: 2rem 1rem;
+    }
+
+    .psaHubTitle {
+        font-size: 1.5rem;
+    }
+
+    .psaHubSubtitle {
+        margin-bottom: 1.5rem;
+    }
+
+    .psaHubCards {
+        gap: 1rem;
+        padding: 0;
+    }
+
+    .psaHubCard {
+        width: 100% !important;
+        max-width: 22rem;
+        min-height: 230px;
+    }
+}

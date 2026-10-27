@@ -1,0 +1,130 @@
+
+/* =========================================
+   MANAGER DASHBOARD - VISUAL REDESIGN
+   ========================================= */
+
+#managerDashboardPage,
+#managerDashboardPage .sapMPageBgStandard {
+    background: #f3f6fa;
+}
+
+/* Top toolbar */
+#managerDashboardPage .sapMPageHeader .sapMBar {
+    background: #ffffff;
+    border-bottom: 1px solid #e2e8f0;
+    box-shadow: 0 2px 8px rgba(24, 52, 81, 0.05);
+}
+
+/* Main content */
+#managerDashboardContent {
+    box-sizing: border-box;
+    padding: 1.5rem 2rem 2rem;
+}
+
+/* Manager profile header */
+#managerHeader {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 3px 12px rgba(24, 52, 81, 0.04);
+}
+
+/* Summary heading */
+#summaryTitle {
+    color: #183451;
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+/* KPI container */
+#managerKpiContainer {
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Individual KPI tiles */
+#managerKpiContainer .sapMGT {
+    flex: 1 1 14rem;
+    width: auto !important;
+    min-width: 13rem;
+    max-width: 22rem;
+    min-height: 9rem;
+    margin: 0 !important;
+    border: 1px solid #e0e7ef;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 3px 10px rgba(24, 52, 81, 0.06);
+    transition: box-shadow 0.2s ease,
+                transform 0.2s ease;
+}
+
+/* KPI hover */
+@media (hover: hover) {
+    #managerKpiContainer .sapMGT:hover {
+        box-shadow: 0 7px 18px rgba(24, 52, 81, 0.12);
+        transform: translateY(-2px);
+    }
+}
+
+/* KPI headings */
+#managerKpiContainer .sapMGTHdrTxt {
+    color: #183451;
+    font-weight: 700;
+}
+
+/* Dashboard tabs */
+#managerDashboardTabs {
+    margin-top: 0.5rem;
+    background: transparent;
+}
+
+/* Tab header */
+#managerDashboardTabs .sapMITBHead {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px 12px 0 0;
+    padding: 0.25rem 0.5rem;
+}
+
+/* Tab content */
+#managerDashboardTabs .sapMITBContent {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-top: 0;
+    border-radius: 0 0 12px 12px;
+    padding: 1rem;
+}
+
+/* Section toolbars */
+#managerDashboardTabs .sapMTB {
+    background: #ffffff;
+    border-bottom: 1px solid #e8edf3;
+}
+
+/* Tables */
+#managerDashboardTabs .sapMListTbl {
+    border-radius: 8px;
+}
+
+#managerDashboardTabs .sapMListTblHeaderCell {
+    background: #f7f9fc;
+}
+
+/* Responsive layout */
+@media (max-width: 768px) {
+    #managerDashboardContent {
+        padding: 1rem;
+    }
+
+    #managerKpiContainer .sapMGT {
+        flex: 1 1 100%;
+        max-width: none;
+    }
+
+    #managerDashboardTabs .sapMITBContent {
+        padding: 0.5rem;
+    }
+}

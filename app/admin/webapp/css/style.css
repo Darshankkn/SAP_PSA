@@ -1,0 +1,162 @@
+/* =========================================
+   ADMIN & FINANCE DASHBOARD - VISUAL POLISH
+   ========================================= */
+
+#adminPage,
+#adminPage .sapMPageBgStandard {
+    background: #f3f6fa;
+}
+
+/* Header bar */
+#adminPage .sapMPageHeader .sapMBar {
+    background: #ffffff;
+    border-bottom: 1px solid #e2e8f0;
+    box-shadow: 0 2px 8px rgba(24, 52, 81, 0.05);
+}
+
+/* Main content wrapper */
+#adminContent {
+    box-sizing: border-box;
+    padding: 1.5rem 2rem 2rem;
+}
+
+/* Page titles */
+#adminTitle {
+    color: #183451;
+    font-size: 1.45rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+#adminSubtitle {
+    color: #556b82;
+    font-size: 0.95rem;
+    margin-bottom: 1.25rem !important;
+}
+
+/* KPI Container */
+#kpiContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+/* KPI Tiles - Standardized Enterprise Cards */
+#kpiContainer .sapMGT {
+    flex: 1 1 13rem;
+    width: auto !important;
+    min-width: 12.5rem;
+    max-width: 20rem;
+    min-height: 8.5rem;
+    margin: 0 !important;
+    border: 1px solid #e0e7ef;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 2px 8px rgba(24, 52, 81, 0.04);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+@media (hover: hover) {
+    #kpiContainer .sapMGT:hover {
+        box-shadow: 0 6px 16px rgba(24, 52, 81, 0.1);
+        transform: translateY(-2px);
+    }
+}
+
+/* Specific Top Accent Borders for Finance & Critical KPI Hierarchy */
+#totalInvoicedTile {
+    border-top: 3.5px solid #0854a0 !important;
+}
+
+#totalPaidTile {
+    border-top: 3.5px solid #107e3e !important;
+}
+
+#outstandingTile {
+    border-top: 3.5px solid #d04437 !important;
+}
+
+#pendingPaymentsTile {
+    border-top: 3.5px solid #e9730c !important;
+}
+
+#paidInvoicesTile {
+    border-top: 3.5px solid #107e3e !important;
+}
+
+#issuesTile {
+    border-top: 3.5px solid #d04437 !important;
+}
+
+#kpiContainer .sapMGTHdrTxt {
+    color: #183451;
+    font-weight: 700;
+}
+
+#kpiContainer .sapMGTSubHdrTxt {
+    color: #64748b;
+    font-size: 0.82rem;
+}
+
+/* Icon Tab Bar */
+#adminTabBar {
+    margin-top: 0.5rem;
+    background: transparent;
+}
+
+#adminTabBar .sapMITBHead {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px 12px 0 0;
+    padding: 0.25rem 0.5rem;
+}
+
+#adminTabBar .sapMITBContent {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-top: 0;
+    border-radius: 0 0 12px 12px;
+    padding: 1.25rem;
+}
+
+/* Section Toolbars */
+#adminTabBar .sapMTB {
+    background: #ffffff;
+    border-bottom: 1px solid #e8edf3;
+    padding: 0.5rem 0;
+    margin-bottom: 0.5rem;
+}
+
+/* Tables */
+#adminTabBar .sapMListTbl {
+    border-radius: 8px;
+    border: 1px solid #e8edf3;
+}
+
+#adminTabBar .sapMListTblHeaderCell {
+    background: #f7f9fc;
+    color: #475569;
+    font-weight: 600;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+#adminTabBar .sapMLIB:hover {
+    background-color: #f8fafc;
+}
+
+/* Responsive Layout */
+@media (max-width: 768px) {
+    #adminContent {
+        padding: 1rem;
+    }
+
+    #kpiContainer .sapMGT {
+        flex: 1 1 100%;
+        max-width: none;
+    }
+
+    #adminTabBar .sapMITBContent {
+        padding: 0.75rem;
+    }
+}

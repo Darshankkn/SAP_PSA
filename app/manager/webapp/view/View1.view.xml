@@ -1,0 +1,941 @@
+<mvc:View
+    controllerName="manager.controller.View1"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    displayBlock="true">
+
+    <Page
+        id="managerDashboardPage"
+        title="Manager Dashboard"
+        showHeader="true"
+        enableScrolling="true">
+
+        <headerContent>
+            <Button
+                id="changeManagerButton"
+                text="Change Manager"
+                icon="sap-icon://switch-classes"
+                type="Transparent"
+                tooltip="Select another Manager"
+                press=".onChangeManager" />
+
+            <Button
+                id="refreshButton"
+                text="Refresh"
+                icon="sap-icon://refresh"
+                type="Transparent"
+                tooltip="Refresh Manager Dashboard"
+                press=".onRefresh" />
+        </headerContent>
+
+        <content>
+            <VBox
+                id="managerDashboardContent"
+                width="100%"
+                class="sapUiResponsiveContentPadding">
+
+                <!-- ================================================= -->
+                <!-- MANAGER HEADER                                    -->
+                <!-- ================================================= -->
+
+                <ObjectHeader
+                    id="managerHeader"
+                    title="{= ${dashboard>/managerName} ? ${dashboard>/managerName} : 'Select a Manager' }"
+                    intro="Manager Dashboard"
+                    responsive="true">
+
+                    <statuses>
+                        <ObjectStatus
+                            text="{= ${dashboard>/managerID} ? 'Manager Selected' : 'No Manager Selected' }"
+                            state="{= ${dashboard>/managerID} ? 'Success' : 'Warning' }"
+                            icon="{= ${dashboard>/managerID} ? 'sap-icon://employee-approvals' : 'sap-icon://alert' }" />
+                    </statuses>
+
+                    <attributes>
+                        <ObjectAttribute
+                            title="Manager ID"
+                            text="{dashboard>/managerID}" />
+                    </attributes>
+                </ObjectHeader>
+
+                <!-- ================================================= -->
+                <!-- KPI SUMMARY                                       -->
+                <!-- ================================================= -->
+
+                <Title
+                    id="summaryTitle"
+                    text="Dashboard Summary"
+                    level="H2"
+                    class="sapUiMediumMarginTop sapUiTinyMarginBottom" />
+
+                <FlexBox
+                    id="managerKpiContainer"
+                    width="100%"
+                    wrap="Wrap"
+                    justifyContent="Start"
+                    alignItems="Stretch"
+                    renderType="Div">
+
+                    <GenericTile
+                        id="activeProjectsTile"
+                        header="Active Projects"
+                        subheader="Managed Projects"
+                        frameType="OneByHalf"
+                        class="sapUiTinyMarginEnd sapUiTinyMarginBottom">
+
+                        <tileContent>
+                            <TileContent
+                                footer="Currently active">
+                                <content>
+                                    <NumericContent
+                                        value="{dashboard>/activeProjects}"
+                                        icon="sap-icon://project-definition-triangle-2"
+                                        valueColor="Good"
+                                        withMargin="false" />
+                                </content>
+                            </TileContent>
+                        </tileContent>
+                    </GenericTile>
+
+                    <GenericTile
+                        id="pendingApprovalsTile"
+                        header="Pending Approvals"
+                        subheader="Submitted Timesheets"
+                        frameType="OneByHalf"
+                        class="sapUiTinyMarginEnd sapUiTinyMarginBottom">
+
+                        <tileContent>
+                            <TileContent
+                                footer="Awaiting review">
+                                <content>
+                                    <NumericContent
+                                        value="{dashboard>/pendingApprovals}"
+                                        icon="sap-icon://pending"
+                                        valueColor="Critical"
+                                        withMargin="false" />
+                                </content>
+                            </TileContent>
+                        </tileContent>
+                    </GenericTile>
+
+                    <GenericTile
+                        id="paidInvoicesTile"
+                        header="Paid Invoices"
+                        subheader="Completed Payments"
+                        frameType="OneByHalf"
+                        class="sapUiTinyMarginEnd sapUiTinyMarginBottom">
+
+                        <tileContent>
+                            <TileContent
+                                footer="Payment received">
+                                <content>
+                                    <NumericContent
+                                        value="{dashboard>/paidInvoices}"
+                                        icon="sap-icon://paid-leave"
+                                        valueColor="Good"
+                                        withMargin="false" />
+                                </content>
+                            </TileContent>
+                        </tileContent>
+                    </GenericTile>
+
+                    <GenericTile
+                        id="atRiskBudgetsTile"
+                        header="At-Risk Budgets"
+                        subheader="At Risk or Breached"
+                        frameType="OneByHalf"
+                        class="sapUiTinyMarginEnd sapUiTinyMarginBottom">
+
+                        <tileContent>
+                            <TileContent
+                                footer="Requires attention">
+                                <content>
+                                    <NumericContent
+                                        value="{dashboard>/atRiskBudgets}"
+                                        icon="sap-icon://warning2"
+                                        valueColor="Error"
+                                        withMargin="false" />
+                                </content>
+                            </TileContent>
+                        </tileContent>
+                    </GenericTile>
+                </FlexBox>
+
+
+                <!-- ================================================= -->
+                <!-- DASHBOARD SECTIONS                                -->
+                <!-- ================================================= -->
+
+                <IconTabBar
+                    id="managerDashboardTabs"
+                    
+                    expandable="false"
+                    selectedKey="approvals"
+                    class="sapUiSmallMarginTop">
+
+                    <items>
+
+                        <!-- ========================================= -->
+                        <!-- MY TEAM                                   -->
+                        <!-- ========================================= -->
+
+                        <IconTabFilter
+                            id="teamTab"
+                            key="team"
+                            text="My Team"
+                            icon="sap-icon://group"
+                            count="{dashboard>/teamCount}">
+
+                            <VBox
+                                id="teamTabContent"
+                                width="100%"
+                                class="sapUiSmallMarginTop">
+
+                                <Toolbar
+                                    id="teamToolbar">
+                                    <Title
+                                        id="teamTableTitle"
+                                        text="Team Members"
+                                        level="H3" />
+
+                                    <ToolbarSpacer id="teamToolbarSpacer" />
+
+                                    <ObjectStatus
+                                        id="teamCountStatus"
+                                        text="{= ${dashboard>/teamCount} + ' Members' }"
+                                        state="{= ${dashboard>/teamCount} > 0 ? 'Success' : 'None' }"
+                                        icon="sap-icon://group" />
+                                </Toolbar>
+
+                                <Table
+                                    id="teamTable"
+                                    width="100%"
+                                    items="{dashboard>/teamMembers}"
+                                    growing="true"
+                                    growingThreshold="20"
+                                    growingScrollToLoad="false"
+                                    noDataText="No direct reports assigned to the selected Manager"
+                                    alternateRowColors="true"
+                                    fixedLayout="false"
+                                    autoPopinMode="true">
+
+                                    <columns>
+                                        <Column
+                                            id="teamColEmployee"
+                                            width="14rem"
+                                            minScreenWidth="Tablet"
+                                            demandPopin="true">
+                                            <Text id="teamColEmployeeText" text="Employee" />
+                                        </Column>
+
+                                        <Column
+                                            id="teamColEmail"
+                                            width="16rem"
+                                            minScreenWidth="Desktop"
+                                            demandPopin="true">
+                                            <Text id="teamColEmailText" text="Email" />
+                                        </Column>
+
+                                        <Column
+                                            id="teamColDepartment"
+                                            width="12rem"
+                                            minScreenWidth="Tablet"
+                                            demandPopin="true">
+                                            <Text id="teamColDepartmentText" text="Department" />
+                                        </Column>
+
+                                        <Column
+                                            id="teamColJobTitle"
+                                            width="12rem"
+                                            minScreenWidth="Desktop"
+                                            demandPopin="true">
+                                            <Text id="teamColJobTitleText" text="Job Title" />
+                                        </Column>
+
+                                        <Column
+                                            id="teamColTimesheetStatus"
+                                            width="10rem"
+                                            minScreenWidth="Tablet"
+                                            demandPopin="true">
+                                            <Text id="teamColTimesheetStatusText" text="Timesheet Status" />
+                                        </Column>
+                                    </columns>
+
+                                    <items>
+                                        <ColumnListItem
+                                            id="teamRow"
+                                            vAlign="Middle">
+
+                                            <cells>
+                                                <ObjectIdentifier
+                                                    id="teamMemberIdentifier"
+                                                    title="{dashboard>fullName}"
+                                                    text="{dashboard>ID}" />
+
+                                                <Text
+                                                    id="teamMemberEmail"
+                                                    text="{dashboard>email}" />
+
+                                                <Text
+                                                    id="teamMemberDepartment"
+                                                    text="{dashboard>departmentName}" />
+
+                                                <Text
+                                                    id="teamMemberJobTitle"
+                                                    text="{dashboard>jobTitle}" />
+
+                                                <ObjectStatus
+                                                    id="teamMemberTimesheetStatus"
+                                                    text="{dashboard>timesheetStatus}"
+                                                    state="{dashboard>timesheetStatusState}"
+                                                    icon="{= ${dashboard>timesheetStatus} === 'Submitted' ? 'sap-icon://pending' : (${dashboard>timesheetStatus} === 'Approved' ? 'sap-icon://accept' : (${dashboard>timesheetStatus} === 'Rejected' ? 'sap-icon://error' : 'sap-icon://employee')) }" />
+                                            </cells>
+                                        </ColumnListItem>
+                                    </items>
+                                </Table>
+                            </VBox>
+                        </IconTabFilter>
+
+                        <!-- ========================================= -->
+                        <!-- PENDING APPROVALS                         -->
+                        <!-- ========================================= -->
+
+                        <IconTabFilter
+                            id="approvalsTab"
+                            key="approvals"
+                            text="Pending Approvals"
+                            icon="sap-icon://approvals"
+                            count="{dashboard>/pendingApprovals}">
+
+                            <VBox
+                                width="100%"
+                                class="sapUiSmallMarginTop">
+
+                                <Toolbar
+                                    id="approvalsToolbar">
+                                    <Title
+                                        text="Submitted Timesheets"
+                                        level="H3" />
+
+                                    <ToolbarSpacer />
+
+                                    <ObjectStatus
+                                        text="{= ${dashboard>/pendingApprovals} + ' Pending' }"
+                                        state="{= ${dashboard>/pendingApprovals} > 0 ? 'Warning' : 'Success' }"
+                                        icon="sap-icon://pending" />
+                                </Toolbar>
+
+                                <Table
+                                    id="approvalsTable"
+                                    width="100%"
+                                    items="{dashboard>/approvals}"
+                                    growing="true"
+                                    growingThreshold="20"
+                                    growingScrollToLoad="false"
+                                    noDataText="No submitted Timesheets are waiting for approval"
+                                    alternateRowColors="true"
+                                    fixedLayout="false"
+                                    autoPopinMode="true">
+
+                                    <columns>
+                                        <Column
+                                            id="colApprEmployee"
+                                            width="13rem"
+                                            minScreenWidth="Tablet"
+                                            demandPopin="true">
+                                            <Text id="hdrApprEmployee" text="Employee" />
+                                        </Column>
+
+                                        <Column
+                                            id="colApprProjects"
+                                            width="15rem"
+                                            minScreenWidth="Desktop"
+                                            demandPopin="true">
+                                            <Text id="hdrApprProjects" text="Projects" />
+                                        </Column>
+
+                                        <Column
+                                            id="colApprWeekStart"
+                                            width="9rem"
+                                            minScreenWidth="Tablet"
+                                            demandPopin="true">
+                                            <Text id="hdrApprWeekStart" text="Week Start" />
+                                        </Column>
+
+                                        <Column
+                                            id="colApprWeekEnd"
+                                            width="9rem"
+                                            minScreenWidth="Tablet"
+                                            demandPopin="true">
+                                            <Text id="hdrApprWeekEnd" text="Week End" />
+                                        </Column>
+
+                                        <Column
+                                            id="colApprHours"
+                                            width="7rem"
+                                            hAlign="End"
+                                            minScreenWidth="Tablet"
+                                            demandPopin="true">
+                                            <Text id="hdrApprHours" text="Hours" />
+                                        </Column>
+
+                                        <Column
+                                            id="colApprStatus"
+                                            width="8rem"
+                                            minScreenWidth="Tablet"
+                                            demandPopin="true">
+                                            <Text id="hdrApprStatus" text="Status" />
+                                        </Column>
+
+                                        <Column
+                                            id="colApprActions"
+                                            width="14rem"
+                                            hAlign="End">
+                                            <Text id="hdrApprActions" text="Actions" />
+                                        </Column>
+                                    </columns>
+
+                                    <items>
+                                        <ColumnListItem
+                                            id="approvalRow"
+                                            vAlign="Middle">
+
+                                            <cells>
+                                                <ObjectIdentifier
+                                                    id="apprEmployeeId"
+                                                    title="{dashboard>employee}"
+                                                    text="{dashboard>ID}" />
+
+                                                <Text
+                                                    id="apprProjectsText"
+                                                    text="{dashboard>projectNames}"
+                                                    wrapping="true"
+                                                    maxLines="2" />
+
+                                                <Text
+                                                    id="apprWeekStartText"
+                                                    text="{dashboard>weekStartDate}" />
+
+                                                <Text
+                                                    id="apprWeekEndText"
+                                                    text="{dashboard>weekEndDate}" />
+
+                                                <ObjectNumber
+                                                    id="apprHoursNumber"
+                                                    number="{dashboard>hours}"
+                                                    unit="hrs"
+                                                    emphasized="false" />
+
+                                                <ObjectStatus
+                                                    id="apprStatusObj"
+                                                    text="{dashboard>status}"
+                                                    state="Warning"
+                                                    icon="sap-icon://pending" />
+
+                                                <HBox
+                                                    id="apprActionsBox"
+                                                    width="100%"
+                                                    justifyContent="End"
+                                                    wrap="Wrap">
+
+                                                    <Button
+                                                        id="btnApproveTimesheet"
+                                                        text="Approve"
+                                                        icon="sap-icon://accept"
+                                                        type="Accept"
+                                                        tooltip="Approve Timesheet"
+                                                        press=".onApproveTimesheet"
+                                                        class="sapUiTinyMarginEnd sapUiTinyMarginBottom" />
+
+                                                    <Button
+                                                        id="btnRejectTimesheet"
+                                                        text="Reject"
+                                                        icon="sap-icon://decline"
+                                                        type="Reject"
+                                                        tooltip="Reject Timesheet"
+                                                        press=".onRejectTimesheet"
+                                                        class="sapUiTinyMarginBottom" />
+                                                </HBox>
+                                            </cells>
+                                        </ColumnListItem>
+                                    </items>
+                                </Table>
+                            </VBox>
+                        </IconTabFilter>
+
+                        <!-- ========================================= -->
+                        <!-- MANAGED PROJECTS                          -->
+                        <!-- ========================================= -->
+
+                        <IconTabFilter
+                            id="projectsTab"
+                            key="projects"
+                            text="Managed Projects"
+                            icon="sap-icon://project-definition-triangle-2"
+                            count="{dashboard>/activeProjects}">
+
+                            <VBox
+                                width="100%"
+                                class="sapUiSmallMarginTop">
+
+                                <Toolbar
+                                    id="projectsToolbar">
+                                    <Title
+                                        text="Managed Projects"
+                                        level="H3" />
+
+                                    <ToolbarSpacer />
+
+                                    <ObjectStatus
+                                        text="{= ${dashboard>/activeProjects} + ' Active' }"
+                                        state="Success"
+                                        icon="sap-icon://project-definition-triangle-2" />
+                                </Toolbar>
+
+                                <Table
+                                    id="projectsTable"
+                                    width="100%"
+                                    items="{dashboard>/projects}"
+                                    growing="true"
+                                    growingThreshold="20"
+                                    growingScrollToLoad="false"
+                                    noDataText="No Projects are assigned to the selected Manager"
+                                    alternateRowColors="true"
+                                    fixedLayout="false"
+                                    autoPopinMode="true">
+
+                                    <columns>
+                                        <Column
+                                            width="9rem"
+                                            minScreenWidth="Tablet"
+                                            demandPopin="true">
+                                            <Text text="Project Code" />
+                                        </Column>
+
+                                        <Column
+                                            width="14rem"
+                                            minScreenWidth="Tablet"
+                                            demandPopin="true">
+                                            <Text text="Project Name" />
+                                        </Column>
+
+                                        <Column
+                                            width="8rem"
+                                            minScreenWidth="Tablet"
+                                            demandPopin="true">
+                                            <Text text="Status" />
+                                        </Column>
+
+                                        <Column
+                                            width="7rem"
+                                            hAlign="End"
+                                            minScreenWidth="Desktop"
+                                            demandPopin="true">
+                                            <Text text="Planned" />
+                                        </Column>
+
+                                        <Column
+                                            width="7rem"
+                                            hAlign="End"
+                                            minScreenWidth="Desktop"
+                                            demandPopin="true">
+                                            <Text text="Consumed" />
+                                        </Column>
+
+                                        <Column
+                                            width="7rem"
+                                            hAlign="End"
+                                            minScreenWidth="Desktop"
+                                            demandPopin="true">
+                                            <Text text="Remaining" />
+                                        </Column>
+
+                                        <Column
+                                            width="16rem"
+                                            minScreenWidth="Tablet"
+                                            demandPopin="true">
+                                            <Text text="Project Completion" />
+                                        </Column>
+
+                                        <Column
+                                            width="9rem"
+                                            minScreenWidth="Desktop"
+                                            demandPopin="true">
+                                            <Text text="Budget Status" />
+                                        </Column>
+
+                                        <Column
+                                            width="9rem"
+                                            hAlign="End"
+                                            minScreenWidth="Desktop"
+                                            demandPopin="true">
+                                            <Text text="Budget" />
+                                        </Column>
+
+                                        <Column
+                                            width="9rem"
+                                            hAlign="End"
+                                            minScreenWidth="Desktop"
+                                            demandPopin="true">
+                                            <Text text="Consumed Cost" />
+                                        </Column>
+
+                                        <Column
+                                            width="9rem"
+                                            hAlign="End"
+                                            minScreenWidth="Desktop"
+                                            demandPopin="true">
+                                            <Text text="Remaining Cost" />
+                                        </Column>
+
+                                        <Column
+                                            width="8rem"
+                                            hAlign="End"
+                                            minScreenWidth="Desktop"
+                                            demandPopin="true">
+                                            <Text text="Rate/Hr" />
+                                        </Column>
+
+                                        <Column
+                                            width="20rem"
+                                            hAlign="End">
+                                            <Text text="Actions" />
+                                        </Column>
+                                    </columns>
+
+                                    <items>
+                                        <ColumnListItem
+                                            id="projectRow"
+                                            vAlign="Middle">
+
+                                            <cells>
+                                                <ObjectIdentifier
+                                                    title="{dashboard>projectCode}"
+                                                    text="{dashboard>ID}" />
+
+                                                <Text
+                                                    text="{dashboard>projectName}"
+                                                    wrapping="true"
+                                                    maxLines="2" />
+
+                                                <ObjectStatus
+                                                    text="{dashboard>status}"
+                                                    state="{dashboard>statusState}" />
+
+                                                <ObjectNumber
+                                                    number="{dashboard>plannedHours}"
+                                                    unit="hrs"
+                                                    emphasized="false" />
+
+                                                <ObjectNumber
+                                                    number="{dashboard>consumedHours}"
+                                                    unit="hrs"
+                                                    emphasized="false" />
+
+                                                <ObjectNumber
+                                                    number="{dashboard>remainingHours}"
+                                                    unit="hrs"
+                                                    emphasized="false"
+                                                    state="{= ${dashboard>remainingHours} === 0 &amp;&amp; ${dashboard>plannedHours} > 0 ? 'Warning' : 'None' }" />
+
+                                                <VBox
+                                                    width="100%"
+                                                    renderType="Bare">
+
+                                                    <ProgressIndicator
+                                                        width="100%"
+                                                        percentValue="{dashboard>completionPercent}"
+                                                        displayValue="{dashboard>completionDisplay}"
+                                                        state="{dashboard>completionState}"
+                                                        showValue="true"
+                                                        tooltip="{= 'Completion: ' + ${dashboard>completionDisplay} + ' - ' + ${dashboard>completionDetails} }" />
+
+                                                    <Text
+                                                        text="{dashboard>completionDetails}"
+                                                        wrapping="false"
+                                                        class="sapUiTinyMarginTop" />
+                                                </VBox>
+
+                                                <ObjectStatus
+                                                    text="{dashboard>budgetStatus}"
+                                                    state="{dashboard>budgetStatusState}"
+                                                    icon="{= ${dashboard>hasBudget} ? 'sap-icon://money-bills' : 'sap-icon://alert' }" />
+
+                                                <ObjectNumber
+                                                    number="{dashboard>budgetAmount}"
+                                                    unit="{dashboard>currencyCode}"
+                                                    emphasized="false" />
+
+                                                <ObjectNumber
+                                                    number="{dashboard>consumedAmount}"
+                                                    unit="{dashboard>currencyCode}"
+                                                    emphasized="false" />
+
+                                                <ObjectNumber
+                                                    number="{dashboard>remainingAmount}"
+                                                    unit="{dashboard>currencyCode}"
+                                                    emphasized="false"
+                                                    state="{= ${dashboard>remainingAmount} &lt;= 0 &amp;&amp; ${dashboard>hasBudget} ? 'Error' : 'None' }" />
+
+                                                <ObjectNumber
+                                                    number="{dashboard>billingRateHr}"
+                                                    unit="{dashboard>currencyCode}"
+                                                    emphasized="false" />
+
+                                                <HBox
+                                                    width="100%"
+                                                    justifyContent="End"
+                                                    wrap="Wrap">
+
+                                                    <Button
+                                                        text="Recalculate"
+                                                        icon="sap-icon://simulate"
+                                                        type="Transparent"
+                                                        enabled="{dashboard>hasBudget}"
+                                                        tooltip="Recalculate Project Budget"
+                                                        press=".onRecalculateBudget"
+                                                        class="sapUiTinyMarginEnd sapUiTinyMarginBottom" />
+
+                                                    <Button
+                                                        text="Generate Invoice"
+                                                        icon="sap-icon://create-form"
+                                                        type="Emphasized"
+                                                        enabled="{dashboard>hasBudget}"
+                                                        tooltip="Generate Draft Invoice"
+                                                        press=".onGenerateInvoice"
+                                                        class="sapUiTinyMarginBottom" />
+                                                </HBox>
+                                            </cells>
+                                        </ColumnListItem>
+                                    </items>
+                                </Table>
+                            </VBox>
+                        </IconTabFilter>
+
+                        <!-- ========================================= -->
+                        <!-- INVOICES                                  -->
+                        <!-- ========================================= -->
+
+                        <IconTabFilter
+                            id="invoicesTab"
+                            key="invoices"
+                            text="Invoices"
+                            icon="sap-icon://sales-order"
+                            count="{dashboard>/invoices/length}">
+
+                            <VBox
+                                width="100%"
+                                class="sapUiSmallMarginTop">
+
+                                <Toolbar
+                                    id="invoicesToolbar">
+                                    <Title
+                                        text="Generated Invoices"
+                                        level="H3" />
+
+                                    <ToolbarSpacer />
+
+                                    <ObjectStatus
+                                        text="{= ${dashboard>/paidInvoices} + ' Paid' }"
+                                        state="Success"
+                                        icon="sap-icon://paid-leave" />
+                                </Toolbar>
+
+                                <Table
+                                    id="invoicesTable"
+                                    width="100%"
+                                    items="{dashboard>/invoices}"
+                                    growing="true"
+                                    growingThreshold="20"
+                                    growingScrollToLoad="false"
+                                    noDataText="No Invoices are available for the selected Manager"
+                                    alternateRowColors="true"
+                                    fixedLayout="false"
+                                    autoPopinMode="true">
+
+                                    <columns>
+                                        <Column
+                                            width="10rem"
+                                            minScreenWidth="Tablet"
+                                            demandPopin="true">
+                                            <Text text="Invoice Number" />
+                                        </Column>
+
+                                        <Column
+                                            width="9rem"
+                                            minScreenWidth="Desktop"
+                                            demandPopin="true">
+                                            <Text text="Project Code" />
+                                        </Column>
+
+                                        <Column
+                                            width="13rem"
+                                            minScreenWidth="Tablet"
+                                            demandPopin="true">
+                                            <Text text="Project Name" />
+                                        </Column>
+
+                                        <Column
+                                            width="9rem"
+                                            minScreenWidth="Desktop"
+                                            demandPopin="true">
+                                            <Text text="Invoice Date" />
+                                        </Column>
+
+                                        <Column
+                                            width="9rem"
+                                            minScreenWidth="Desktop"
+                                            demandPopin="true">
+                                            <Text text="Due Date" />
+                                        </Column>
+
+                                        <Column
+                                            width="8rem"
+                                            hAlign="End"
+                                            minScreenWidth="Desktop"
+                                            demandPopin="true">
+                                            <Text text="Billable Hours" />
+                                        </Column>
+
+                                        <Column
+                                            width="9rem"
+                                            hAlign="End"
+                                            minScreenWidth="Desktop"
+                                            demandPopin="true">
+                                            <Text text="Subtotal" />
+                                        </Column>
+
+                                        <Column
+                                            width="8rem"
+                                            hAlign="End"
+                                            minScreenWidth="Desktop"
+                                            demandPopin="true">
+                                            <Text text="Tax" />
+                                        </Column>
+
+                                        <Column
+                                            width="10rem"
+                                            hAlign="End"
+                                            minScreenWidth="Tablet"
+                                            demandPopin="true">
+                                            <Text text="Payable" />
+                                        </Column>
+
+                                        <Column
+                                            width="9rem"
+                                            minScreenWidth="Tablet"
+                                            demandPopin="true">
+                                            <Text text="Payment Status" />
+                                        </Column>
+
+                                        <Column
+                                            width="8rem"
+                                            minScreenWidth="Desktop"
+                                            demandPopin="true">
+                                            <Text text="Invoice Status" />
+                                        </Column>
+
+                                        <Column
+                                            width="17rem"
+                                            hAlign="End">
+                                            <Text text="Actions" />
+                                        </Column>
+                                    </columns>
+
+                                    <items>
+                                        <ColumnListItem
+                                            id="invoiceRow"
+                                            vAlign="Middle">
+
+                                            <cells>
+                                                <ObjectIdentifier
+                                                    title="{dashboard>invoiceNumber}"
+                                                    text="{dashboard>ID}" />
+
+                                                <Text
+                                                    text="{dashboard>projectCode}" />
+
+                                                <Text
+                                                    text="{dashboard>projectName}"
+                                                    wrapping="true"
+                                                    maxLines="2" />
+
+                                                <Text
+                                                    text="{dashboard>invoiceDate}" />
+
+                                                <Text
+                                                    text="{dashboard>dueDate}" />
+
+                                                <ObjectNumber
+                                                    number="{dashboard>billableHours}"
+                                                    unit="hrs"
+                                                    emphasized="false" />
+
+                                                <ObjectNumber
+                                                    number="{dashboard>subtotal}"
+                                                    unit="{dashboard>currencyCode}"
+                                                    emphasized="false" />
+
+                                                <ObjectNumber
+                                                    number="{dashboard>taxAmount}"
+                                                    unit="{dashboard>currencyCode}"
+                                                    emphasized="false" />
+
+                                                <ObjectNumber
+                                                    number="{dashboard>payableAmount}"
+                                                    unit="{dashboard>currencyCode}"
+                                                    emphasized="true" />
+
+                                                <ObjectStatus
+                                                    text="{dashboard>paymentStatus}"
+                                                    state="{dashboard>statusState}"
+                                                    icon="{= ${dashboard>isPaid} ? 'sap-icon://accept' : 'sap-icon://pending' }" />
+
+                                                <ObjectStatus
+                                                    text="{dashboard>invoiceStatus}"
+                                                    state="{dashboard>statusState}" />
+
+                                                <HBox
+                                                    width="100%"
+                                                    justifyContent="End"
+                                                    wrap="Wrap">
+
+                                                    <Button
+                                                        text="Issue"
+                                                        icon="sap-icon://paper-plane"
+                                                        type="Emphasized"
+                                                        visible="{dashboard>canIssue}"
+                                                        enabled="{dashboard>canIssue}"
+                                                        tooltip="Issue this Invoice"
+                                                        press=".onIssueInvoice"
+                                                        class="sapUiTinyMarginEnd sapUiTinyMarginBottom" />
+
+                                                    <Button
+                                                        text="Mark Paid"
+                                                        icon="sap-icon://money-bills"
+                                                        type="Accept"
+                                                        visible="{dashboard>canMarkPaid}"
+                                                        enabled="{dashboard>canMarkPaid}"
+                                                        tooltip="Confirm Client payment"
+                                                        press=".onMarkInvoicePaid"
+                                                        class="sapUiTinyMarginBottom" />
+
+                                                    <ObjectStatus
+                                                        text="Paid"
+                                                        state="Success"
+                                                        icon="sap-icon://accept"
+                                                        visible="{dashboard>isPaid}"
+                                                        class="sapUiTinyMarginBegin" />
+                                                </HBox>
+                                            </cells>
+                                        </ColumnListItem>
+                                    </items>
+                                </Table>
+                            </VBox>
+                        </IconTabFilter>
+                    </items>
+                </IconTabBar>
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>

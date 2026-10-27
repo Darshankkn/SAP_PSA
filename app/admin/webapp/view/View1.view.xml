@@ -1,0 +1,1143 @@
+<mvc:View
+    controllerName="admin.controller.View1"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    displayBlock="true">
+
+    <Page
+        id="adminPage"
+        title="PSA Admin Dashboard">
+
+        <headerContent>
+            <Button
+                id="refreshButton"
+                text="Refresh"
+                icon="sap-icon://refresh"
+                press=".onRefresh" />
+        </headerContent>
+
+        <content>
+            <VBox
+                id="adminContent"
+                class="sapUiMediumMargin">
+
+                <Title
+                    id="adminTitle"
+                    text="Administration and Finance"
+                    level="H1" />
+
+                <Text
+                    id="adminSubtitle"
+                    text="Manage employees, managers, clients, projects, budgets, tasks, and payments."
+                    class="sapUiSmallMarginTop sapUiSmallMarginBottom" />
+
+                <HBox
+                    id="kpiContainer"
+                    wrap="Wrap"
+                    class="sapUiSmallMarginBottom">
+
+                    <GenericTile
+                        id="employeesTile"
+                        header="Employees"
+                        subheader="Active"
+                        class="sapUiTinyMarginEnd sapUiTinyMarginBottom">
+                        <TileContent id="employeesTileContent">
+                            <NumericContent
+                                id="employeesValue"
+                                value="{admin>/activeEmployees}"
+                                valueColor="Good"
+                                icon="sap-icon://employee" />
+                        </TileContent>
+                    </GenericTile>
+
+                    <GenericTile
+                        id="managersTile"
+                        header="Managers"
+                        subheader="Active"
+                        class="sapUiTinyMarginEnd sapUiTinyMarginBottom">
+                        <TileContent id="managersTileContent">
+                            <NumericContent
+                                id="managersValue"
+                                value="{admin>/activeManagers}"
+                                valueColor="Good"
+                                icon="sap-icon://manager" />
+                        </TileContent>
+                    </GenericTile>
+
+                    <GenericTile
+                        id="clientsTile"
+                        header="Clients"
+                        subheader="Active"
+                        class="sapUiTinyMarginEnd sapUiTinyMarginBottom">
+                        <TileContent id="clientsTileContent">
+                            <NumericContent
+                                id="clientsValue"
+                                value="{admin>/activeClients}"
+                                valueColor="Good"
+                                icon="sap-icon://customer" />
+                        </TileContent>
+                    </GenericTile>
+
+                    <GenericTile
+                        id="projectsTile"
+                        header="Projects"
+                        subheader="Active"
+                        class="sapUiTinyMarginEnd sapUiTinyMarginBottom">
+                        <TileContent id="projectsTileContent">
+                            <NumericContent
+                                id="projectsValue"
+                                value="{admin>/activeProjects}"
+                                valueColor="Good"
+                                icon="sap-icon://project-definition-triangle-2" />
+                        </TileContent>
+                    </GenericTile>
+
+                    <GenericTile
+                        id="missingBudgetsTile"
+                        header="Missing Budgets"
+                        subheader="Setup required"
+                        class="sapUiTinyMarginEnd sapUiTinyMarginBottom">
+                        <TileContent id="missingBudgetsTileContent">
+                            <NumericContent
+                                id="missingBudgetsValue"
+                                value="{admin>/missingBudgets}"
+                                valueColor="Critical"
+                                icon="sap-icon://money-bills" />
+                        </TileContent>
+                    </GenericTile>
+
+                    <GenericTile
+                        id="pendingPaymentsTile"
+                        header="Pending Payments"
+                        subheader="Issued invoices"
+                        class="sapUiTinyMarginEnd sapUiTinyMarginBottom">
+                        <TileContent id="pendingPaymentsTileContent">
+                            <NumericContent
+                                id="pendingPaymentsValue"
+                                value="{admin>/pendingPayments}"
+                                valueColor="Critical"
+                                icon="sap-icon://pending" />
+                        </TileContent>
+                    </GenericTile>
+
+                    <GenericTile
+                        id="paidInvoicesTile"
+                        header="Paid Invoices"
+                        subheader="Confirmed"
+                        class="sapUiTinyMarginEnd sapUiTinyMarginBottom">
+                        <TileContent id="paidInvoicesTileContent">
+                            <NumericContent
+                                id="paidInvoicesValue"
+                                value="{admin>/paidInvoices}"
+                                valueColor="Good"
+                                icon="sap-icon://sales-order" />
+                        </TileContent>
+                    </GenericTile>
+
+                    <GenericTile
+                        id="issuesTile"
+                        header="Data Issues"
+                        subheader="Action required"
+                        class="sapUiTinyMarginEnd sapUiTinyMarginBottom">
+                        <TileContent id="issuesTileContent">
+                            <NumericContent
+                                id="issuesValue"
+                                value="{admin>/dataIssues}"
+                                valueColor="Error"
+                                icon="sap-icon://alert" />
+                        </TileContent>
+                    </GenericTile>
+
+                    <GenericTile
+                        id="totalInvoicedTile"
+                        header="Total Invoiced"
+                        subheader="Billed Amount"
+                        class="sapUiTinyMarginEnd sapUiTinyMarginBottom">
+                        <TileContent id="totalInvoicedTileContent">
+                            <NumericContent
+                                id="totalInvoicedValue"
+                                value="{admin>/totalInvoicedDisplay}"
+                                valueColor="Neutral"
+                                icon="sap-icon://sales-order"
+                                withMargin="false" />
+                        </TileContent>
+                    </GenericTile>
+
+                    <GenericTile
+                        id="totalPaidTile"
+                        header="Collected Payments"
+                        subheader="Paid Amount"
+                        class="sapUiTinyMarginEnd sapUiTinyMarginBottom">
+                        <TileContent id="totalPaidTileContent">
+                            <NumericContent
+                                id="totalPaidValue"
+                                value="{admin>/totalPaidDisplay}"
+                                valueColor="Good"
+                                icon="sap-icon://money-bills"
+                                withMargin="false" />
+                        </TileContent>
+                    </GenericTile>
+
+                    <GenericTile
+                        id="outstandingTile"
+                        header="Outstanding Balance"
+                        subheader="Unpaid Amount"
+                        class="sapUiTinyMarginEnd sapUiTinyMarginBottom">
+                        <TileContent id="outstandingTileContent">
+                            <NumericContent
+                                id="outstandingValue"
+                                value="{admin>/outstandingDisplay}"
+                                valueColor="Critical"
+                                icon="sap-icon://pending"
+                                withMargin="false" />
+                        </TileContent>
+                    </GenericTile>
+
+                </HBox>
+
+                <IconTabBar
+                    id="adminTabBar"
+                    expandable="false"
+                    selectedKey="employees">
+
+                    <items>
+
+                        <!-- EMPLOYEES -->
+
+                        <IconTabFilter
+                            id="employeesTab"
+                            key="employees"
+                            text="Employees"
+                            icon="sap-icon://employee"
+                            count="{admin>/activeEmployees}">
+
+                            <Toolbar id="employeesToolbar">
+                                <Title
+                                    id="employeesTitle"
+                                    text="Employee Management"
+                                    level="H2" />
+                                <ToolbarSpacer id="employeesSpacer" />
+                                <Button
+                                    id="addEmployeeButton"
+                                    text="Add Employee"
+                                    type="Emphasized"
+                                    press=".onAddEmployee" />
+                            </Toolbar>
+
+                            <Table
+                                id="employeesTable"
+                                items="{admin>/employees}"
+                                growing="true"
+                                noDataText="No Employees available">
+
+                                <columns>
+                                    <Column id="employeeNameColumn">
+                                        <Text id="employeeNameHeader" text="Employee" />
+                                    </Column>
+                                    <Column id="employeeEmailColumn">
+                                        <Text id="employeeEmailHeader" text="Email" />
+                                    </Column>
+                                    <Column id="employeeJobColumn">
+                                        <Text id="employeeJobHeader" text="Job Title" />
+                                    </Column>
+                                    <Column id="employeeDateColumn">
+                                        <Text id="employeeDateHeader" text="Join Date" />
+                                    </Column>
+                                    <Column id="employeeRateColumn">
+                                        <Text id="employeeRateHeader" text="Hourly Rate" />
+                                    </Column>
+                                    <Column id="employeeStatusColumn">
+                                        <Text id="employeeStatusHeader" text="Status" />
+                                    </Column>
+                                    <Column id="employeeActionsColumn" width="24rem">
+                                        <Text id="employeeActionsHeader" text="Actions" />
+                                    </Column>
+                                </columns>
+
+                                <items>
+                                    <ColumnListItem id="employeeRow">
+                                        <cells>
+                                            <ObjectIdentifier
+                                                id="employeeIdentifier"
+                                                title="{admin>employeeName}"
+                                                text="{admin>ID}" />
+                                            <Text id="employeeEmail" text="{admin>email}" />
+                                            <Text id="employeeJob" text="{admin>jobTitle}" />
+                                            <Text id="employeeDate" text="{admin>joinDate}" />
+                                            <ObjectNumber
+                                                id="employeeRate"
+                                                number="{admin>hourlyRate}" />
+                                            <ObjectStatus
+                                                id="employeeStatus"
+                                                text="{admin>status}"
+                                                state="{admin>statusState}" />
+                                            <HBox id="employeeActions" wrap="Wrap">
+                                                <Button
+                                                    id="editEmployeeButton"
+                                                    text="Edit"
+                                                    press=".onEditEmployee"
+                                                    class="sapUiTinyMarginEnd" />
+                                                <Button
+                                                    id="toggleEmployeeButton"
+                                                    text="{= ${admin>status} === 'Active' ? 'Deactivate' : 'Activate' }"
+                                                    press=".onToggleEmployeeStatus"
+                                                    class="sapUiTinyMarginEnd" />
+                                                <Button
+                                                    id="deleteEmployeeButton"
+                                                    text="Delete"
+                                                    type="Reject"
+                                                    press=".onDeleteEmployee" />
+                                            </HBox>
+                                        </cells>
+                                    </ColumnListItem>
+                                </items>
+                            </Table>
+                        </IconTabFilter>
+
+                        <!-- MANAGERS -->
+
+                        <IconTabFilter
+                            id="managersTab"
+                            key="managers"
+                            text="Managers"
+                            icon="sap-icon://manager"
+                            count="{admin>/activeManagers}">
+
+                            <Toolbar id="managersToolbar">
+                                <Title
+                                    id="managersTitle"
+                                    text="Manager Management"
+                                    level="H2" />
+                                <ToolbarSpacer id="managersSpacer" />
+                                <Button
+                                    id="addManagerButton"
+                                    text="Add Manager"
+                                    type="Emphasized"
+                                    press=".onAddManager" />
+                            </Toolbar>
+
+                            <Table
+                                id="managersTable"
+                                items="{admin>/managers}"
+                                noDataText="No Managers available">
+
+                                <columns>
+                                    <Column id="managerNameColumn">
+                                        <Text id="managerNameHeader" text="Manager" />
+                                    </Column>
+                                    <Column id="managerLevelColumn">
+                                        <Text id="managerLevelHeader" text="Level" />
+                                    </Column>
+                                    <Column id="managerStatusColumn">
+                                        <Text id="managerStatusHeader" text="Status" />
+                                    </Column>
+                                    <Column id="managerActionsColumn" width="24rem">
+                                        <Text id="managerActionsHeader" text="Actions" />
+                                    </Column>
+                                </columns>
+
+                                <items>
+                                    <ColumnListItem id="managerRow">
+                                        <cells>
+                                            <ObjectIdentifier
+                                                id="managerIdentifier"
+                                                title="{admin>managerName}"
+                                                text="{admin>ID}" />
+                                            <Text id="managerLevel" text="{admin>managerLevel}" />
+                                            <ObjectStatus
+                                                id="managerStatus"
+                                                text="{admin>status}"
+                                                state="{admin>statusState}" />
+                                            <HBox id="managerActions" wrap="Wrap">
+                                                <Button
+                                                    id="editManagerButton"
+                                                    text="Edit"
+                                                    press=".onEditManager"
+                                                    class="sapUiTinyMarginEnd" />
+                                                <Button
+                                                    id="toggleManagerButton"
+                                                    text="{= ${admin>status} === 'Active' ? 'Deactivate' : 'Activate' }"
+                                                    press=".onToggleManagerStatus"
+                                                    class="sapUiTinyMarginEnd" />
+                                                <Button
+                                                    id="deleteManagerButton"
+                                                    text="Delete"
+                                                    type="Reject"
+                                                    press=".onDeleteManager" />
+                                            </HBox>
+                                        </cells>
+                                    </ColumnListItem>
+                                </items>
+                            </Table>
+                        </IconTabFilter>
+
+                        <!-- CLIENTS -->
+
+                        <IconTabFilter
+                            id="clientsTab"
+                            key="clients"
+                            text="Clients"
+                            icon="sap-icon://customer"
+                            count="{admin>/activeClients}">
+
+                            <Toolbar id="clientsToolbar">
+                                <Title
+                                    id="clientsTitle"
+                                    text="Client Management"
+                                    level="H2" />
+                                <ToolbarSpacer id="clientsSpacer" />
+                                <Button
+                                    id="addClientButton"
+                                    text="Add Client"
+                                    type="Emphasized"
+                                    press=".onAddClient" />
+                            </Toolbar>
+
+                            <Table
+                                id="clientsTable"
+                                items="{admin>/clients}"
+                                noDataText="No Clients available">
+
+                                <columns>
+                                    <Column id="clientNameColumn">
+                                        <Text id="clientNameHeader" text="Client" />
+                                    </Column>
+                                    <Column id="clientContactColumn">
+                                        <Text id="clientContactHeader" text="Contact" />
+                                    </Column>
+                                    <Column id="clientEmailColumn">
+                                        <Text id="clientEmailHeader" text="Email" />
+                                    </Column>
+                                    <Column id="clientCountryColumn">
+                                        <Text id="clientCountryHeader" text="Country" />
+                                    </Column>
+                                    <Column id="clientStatusColumn">
+                                        <Text id="clientStatusHeader" text="Status" />
+                                    </Column>
+                                    <Column id="clientActionsColumn" width="24rem">
+                                        <Text id="clientActionsHeader" text="Actions" />
+                                    </Column>
+                                </columns>
+
+                                <items>
+                                    <ColumnListItem id="clientRow">
+                                        <cells>
+                                            <ObjectIdentifier
+                                                id="clientIdentifier"
+                                                title="{admin>clientName}"
+                                                text="{admin>ID}" />
+                                            <Text id="clientContact" text="{admin>contactPerson}" />
+                                            <Text id="clientEmail" text="{admin>email}" />
+                                            <Text id="clientCountry" text="{admin>country}" />
+                                            <ObjectStatus
+                                                id="clientStatus"
+                                                text="{admin>status}"
+                                                state="{admin>statusState}" />
+                                            <HBox id="clientActions" wrap="Wrap">
+                                                <Button
+                                                    id="editClientButton"
+                                                    text="Edit"
+                                                    press=".onEditClient"
+                                                    class="sapUiTinyMarginEnd" />
+                                                <Button
+                                                    id="toggleClientButton"
+                                                    text="{= ${admin>status} === 'Active' ? 'Deactivate' : 'Activate' }"
+                                                    press=".onToggleClientStatus"
+                                                    class="sapUiTinyMarginEnd" />
+                                                <Button
+                                                    id="deleteClientButton"
+                                                    text="Delete"
+                                                    type="Reject"
+                                                    press=".onDeleteClient" />
+                                            </HBox>
+                                        </cells>
+                                    </ColumnListItem>
+                                </items>
+                            </Table>
+                        </IconTabFilter>
+
+                        <!-- PROJECTS -->
+
+                        <IconTabFilter
+                            id="projectsTab"
+                            key="projects"
+                            text="Projects"
+                            icon="sap-icon://project-definition-triangle-2"
+                            count="{admin>/activeProjects}">
+
+                            <Toolbar id="projectsToolbar">
+                                <Title id="projectsTitle" text="Projects" level="H2" />
+                                <ToolbarSpacer id="projectsSpacer" />
+                                <Button
+                                    id="addProjectButton"
+                                    text="Add Project"
+                                    type="Emphasized"
+                                    press=".onAddProject"
+                                    class="sapUiTinyMarginEnd" />
+                                <Button
+                                    id="addBudgetFromProjectButton"
+                                    text="Add Budget"
+                                    press=".onAddBudget"
+                                    class="sapUiTinyMarginEnd" />
+                                <Button
+                                    id="addMilestoneFromProjectButton"
+                                    text="Add Milestone"
+                                    press=".onAddMilestone" />
+                            </Toolbar>
+
+                            <Table
+                                id="projectsTable"
+                                items="{admin>/projects}"
+                                growing="true"
+                                noDataText="No Projects available">
+
+                                <columns>
+                                    <Column id="projectNameColumn">
+                                        <Text id="projectNameHeader" text="Project" />
+                                    </Column>
+                                    <Column id="projectClientColumn">
+                                        <Text id="projectClientHeader" text="Client" />
+                                    </Column>
+                                    <Column id="projectManagerColumn">
+                                        <Text id="projectManagerHeader" text="Manager" />
+                                    </Column>
+                                    <Column id="projectBillingColumn">
+                                        <Text id="projectBillingHeader" text="Billing Type" />
+                                    </Column>
+                                    <Column id="projectHoursColumn">
+                                        <Text id="projectHoursHeader" text="Hours" />
+                                    </Column>
+                                    <Column id="projectBudgetColumn">
+                                        <Text id="projectBudgetHeader" text="Budget" />
+                                    </Column>
+                                    <Column id="projectStatusColumn">
+                                        <Text id="projectStatusHeader" text="Status" />
+                                    </Column>
+                                    <Column id="projectActionsColumn" width="24rem">
+                                        <Text id="projectActionsHeader" text="Actions" />
+                                    </Column>
+                                </columns>
+
+                                <items>
+                                    <ColumnListItem id="projectRow">
+                                        <cells>
+                                            <ObjectIdentifier
+                                                id="projectIdentifier"
+                                                title="{admin>projectName}"
+                                                text="{admin>projectCode}" />
+                                            <Text id="projectClient" text="{admin>clientName}" />
+                                            <Text id="projectManager" text="{admin>managerName}" />
+                                            <Text id="projectBilling" text="{admin>billingType}" />
+                                            <ObjectNumber
+                                                id="projectHours"
+                                                number="{admin>consumedHours}"
+                                                unit="{= 'of ' + ${admin>plannedHours} + ' hrs' }" />
+                                            <ObjectStatus
+                                                id="projectBudget"
+                                                text="{= ${admin>hasBudget} ? 'Configured' : 'Missing' }"
+                                                state="{= ${admin>hasBudget} ? 'Success' : 'Error' }" />
+                                            <ObjectStatus
+                                                id="projectStatus"
+                                                text="{admin>status}"
+                                                state="{admin>statusState}" />
+                                            <HBox id="projectActions" wrap="Wrap">
+                                                <Button
+                                                    id="editProjectButton"
+                                                    text="Edit"
+                                                    press=".onEditProject"
+                                                    class="sapUiTinyMarginEnd" />
+                                                <Button
+                                                    id="cancelProjectButton"
+                                                    text="Cancel"
+                                                    visible="{= ${admin>status} !== 'Cancelled' }"
+                                                    press=".onCancelProject"
+                                                    class="sapUiTinyMarginEnd" />
+                                                <Button
+                                                    id="deleteProjectButton"
+                                                    text="Delete"
+                                                    type="Reject"
+                                                    press=".onDeleteProject" />
+                                            </HBox>
+                                        </cells>
+                                    </ColumnListItem>
+                                </items>
+                            </Table>
+                        </IconTabFilter>
+
+                        <!-- BUDGETS -->
+
+                        <IconTabFilter
+                            id="budgetsTab"
+                            key="budgets"
+                            text="Budgets"
+                            icon="sap-icon://money-bills"
+                            count="{= ${admin>/budgets}.length }">
+
+                            <Toolbar id="budgetsToolbar">
+                                <Title id="budgetsTitle" text="Budgets" level="H2" />
+                                <ToolbarSpacer id="budgetsSpacer" />
+                                <Button
+                                    id="addBudgetButton"
+                                    text="Add Budget"
+                                    type="Emphasized"
+                                    press=".onAddBudget" />
+                            </Toolbar>
+
+                            <Table
+                                id="budgetsTable"
+                                items="{admin>/budgets}"
+                                noDataText="No Budgets available">
+
+                                <columns>
+                                    <Column id="budgetProjectColumn">
+                                        <Text id="budgetProjectHeader" text="Project" />
+                                    </Column>
+                                    <Column id="budgetAllocatedColumn">
+                                        <Text id="budgetAllocatedHeader" text="Allocated" />
+                                    </Column>
+                                    <Column id="budgetConsumedColumn">
+                                        <Text id="budgetConsumedHeader" text="Consumed" />
+                                    </Column>
+                                    <Column id="budgetRemainingColumn">
+                                        <Text id="budgetRemainingHeader" text="Remaining" />
+                                    </Column>
+                                    <Column id="budgetRateColumn">
+                                        <Text id="budgetRateHeader" text="Rate / Hour" />
+                                    </Column>
+                                    <Column id="budgetStatusColumn">
+                                        <Text id="budgetStatusHeader" text="Status" />
+                                    </Column>
+                                    <Column id="budgetActionsColumn">
+                                        <Text id="budgetActionsHeader" text="Actions" />
+                                    </Column>
+                                </columns>
+
+                                <items>
+                                    <ColumnListItem id="budgetRow">
+                                        <cells>
+                                            <ObjectIdentifier
+                                                id="budgetProject"
+                                                title="{admin>projectName}"
+                                                text="{admin>projectCode}" />
+                                            <ObjectNumber
+                                                id="budgetAllocated"
+                                                number="{admin>budgetAmount}"
+                                                unit="{admin>currencyCode}" />
+                                            <ObjectNumber
+                                                id="budgetConsumed"
+                                                number="{admin>consumedAmount}"
+                                                unit="{admin>currencyCode}" />
+                                            <ObjectNumber
+                                                id="budgetRemaining"
+                                                number="{admin>remainingAmount}"
+                                                unit="{admin>currencyCode}" />
+                                            <ObjectNumber
+                                                id="budgetRate"
+                                                number="{admin>billingRateHr}"
+                                                unit="{admin>currencyCode}" />
+                                            <ObjectStatus
+                                                id="budgetStatus"
+                                                text="{admin>budgetStatus}"
+                                                state="{admin>statusState}" />
+                                            <HBox id="budgetActions">
+                                                <Button
+                                                    id="editBudgetButton"
+                                                    text="Edit"
+                                                    press=".onEditBudget"
+                                                    class="sapUiTinyMarginEnd" />
+                                                <Button
+                                                    id="deleteBudgetButton"
+                                                    text="Delete"
+                                                    type="Reject"
+                                                    press=".onDeleteBudget" />
+                                            </HBox>
+                                        </cells>
+                                    </ColumnListItem>
+                                </items>
+                            </Table>
+                        </IconTabFilter>
+
+                        <!-- MILESTONES -->
+
+                        <IconTabFilter
+                            id="milestonesTab"
+                            key="milestones"
+                            text="Milestones"
+                            icon="sap-icon://process"
+                            count="{= ${admin>/milestones}.length }">
+
+                            <Toolbar id="milestonesToolbar">
+                                <Title id="milestonesTitle" text="Milestones" level="H2" />
+                                <ToolbarSpacer id="milestonesSpacer" />
+                                <Button
+                                    id="addMilestoneButton"
+                                    text="Add Milestone"
+                                    type="Emphasized"
+                                    press=".onAddMilestone" />
+                            </Toolbar>
+
+                            <Table
+                                id="milestonesTable"
+                                items="{admin>/milestones}"
+                                noDataText="No Milestones available">
+
+                                <columns>
+                                    <Column id="milestoneProjectColumn">
+                                        <Text id="milestoneProjectHeader" text="Project" />
+                                    </Column>
+                                    <Column id="milestoneNameColumn">
+                                        <Text id="milestoneNameHeader" text="Milestone" />
+                                    </Column>
+                                    <Column id="milestoneDatesColumn">
+                                        <Text id="milestoneDatesHeader" text="Dates" />
+                                    </Column>
+                                    <Column id="milestoneProgressColumn">
+                                        <Text id="milestoneProgressHeader" text="Completion" />
+                                    </Column>
+                                    <Column id="milestoneStatusColumn">
+                                        <Text id="milestoneStatusHeader" text="Status" />
+                                    </Column>
+                                    <Column id="milestoneActionsColumn" width="24rem">
+                                        <Text id="milestoneActionsHeader" text="Actions" />
+                                    </Column>
+                                </columns>
+
+                                <items>
+                                    <ColumnListItem id="milestoneRow">
+                                        <cells>
+                                            <ObjectIdentifier
+                                                id="milestoneProject"
+                                                title="{admin>projectName}"
+                                                text="{admin>projectCode}" />
+                                            <ObjectIdentifier
+                                                id="milestoneName"
+                                                title="{admin>milestoneName}"
+                                                text="{admin>ID}" />
+                                            <Text
+                                                id="milestoneDates"
+                                                text="{= ${admin>startDate} + ' to ' + ${admin>endDate} }" />
+                                            <ObjectNumber
+                                                id="milestoneProgress"
+                                                number="{admin>completionPercent}"
+                                                unit="%" />
+                                            <ObjectStatus
+                                                id="milestoneStatus"
+                                                text="{admin>status}"
+                                                state="{admin>statusState}" />
+                                            <HBox id="milestoneActions" wrap="Wrap">
+                                                <Button
+                                                    id="editMilestoneButton"
+                                                    text="Edit"
+                                                    press=".onEditMilestone"
+                                                    class="sapUiTinyMarginEnd" />
+                                                <Button
+                                                    id="completeMilestoneButton"
+                                                    text="Complete"
+                                                    visible="{= ${admin>status} !== 'Completed' }"
+                                                    press=".onCompleteMilestone"
+                                                    class="sapUiTinyMarginEnd" />
+                                                <Button
+                                                    id="deleteMilestoneButton"
+                                                    text="Delete"
+                                                    type="Reject"
+                                                    press=".onDeleteMilestone" />
+                                            </HBox>
+                                        </cells>
+                                    </ColumnListItem>
+                                </items>
+                            </Table>
+                        </IconTabFilter>
+
+                        <!-- TASK ASSIGNMENTS -->
+
+                        <IconTabFilter
+                            id="assignmentsTab"
+                            key="assignments"
+                            text="Task Assignments"
+                            icon="sap-icon://task"
+                            count="{= ${admin>/assignments}.length }">
+
+                            <Toolbar id="assignmentsToolbar">
+                                <Title
+                                    id="assignmentsTitle"
+                                    text="Task Assignments"
+                                    level="H2" />
+                                <ToolbarSpacer id="assignmentsSpacer" />
+                                <Button
+                                    id="assignTaskButton"
+                                    text="Assign Employee Task"
+                                    type="Emphasized"
+                                    press=".onAssignEmployeeTask" />
+                            </Toolbar>
+
+                            <Table
+                                id="assignmentsTable"
+                                items="{admin>/assignments}"
+                                growing="true"
+                                noDataText="No Tasks available">
+
+                                <columns>
+                                    <Column id="assignmentEmployeeColumn">
+                                        <Text id="assignmentEmployeeHeader" text="Employee" />
+                                    </Column>
+                                    <Column id="assignmentProjectColumn">
+                                        <Text id="assignmentProjectHeader" text="Project" />
+                                    </Column>
+                                    <Column id="assignmentMilestoneColumn">
+                                        <Text id="assignmentMilestoneHeader" text="Milestone" />
+                                    </Column>
+                                    <Column id="assignmentTaskColumn">
+                                        <Text id="assignmentTaskHeader" text="Task" />
+                                    </Column>
+                                    <Column id="assignmentHoursColumn">
+                                        <Text id="assignmentHoursHeader" text="Hours" />
+                                    </Column>
+                                    <Column id="assignmentStatusColumn">
+                                        <Text id="assignmentStatusHeader" text="Status" />
+                                    </Column>
+                                    <Column id="assignmentActionsColumn" width="24rem">
+                                        <Text id="assignmentActionsHeader" text="Actions" />
+                                    </Column>
+                                </columns>
+
+                                <items>
+                                    <ColumnListItem id="assignmentRow">
+                                        <cells>
+                                            <ObjectIdentifier
+                                                id="assignmentEmployee"
+                                                title="{admin>employeeName}"
+                                                text="{admin>employeeID}" />
+                                            <ObjectIdentifier
+                                                id="assignmentProject"
+                                                title="{admin>projectName}"
+                                                text="{admin>projectCode}" />
+                                            <Text
+                                                id="assignmentMilestone"
+                                                text="{admin>milestoneName}" />
+                                            <ObjectIdentifier
+                                                id="assignmentTask"
+                                                title="{admin>taskName}"
+                                                text="{admin>ID}" />
+                                            <ObjectNumber
+                                                id="assignmentHours"
+                                                number="{admin>actualHours}"
+                                                unit="{= 'of ' + ${admin>estimatedHours} + ' hrs' }" />
+                                            <ObjectStatus
+                                                id="assignmentStatus"
+                                                text="{admin>status}"
+                                                state="{admin>statusState}" />
+                                            <HBox id="assignmentActions" wrap="Wrap">
+                                                <Button
+                                                    id="editTaskButton"
+                                                    text="Edit"
+                                                    press=".onEditTask"
+                                                    class="sapUiTinyMarginEnd" />
+                                                <Button
+                                                    id="completeTaskButton"
+                                                    text="Complete"
+                                                    visible="{= ${admin>status} !== 'Completed' }"
+                                                    press=".onCompleteTask"
+                                                    class="sapUiTinyMarginEnd" />
+                                                <Button
+                                                    id="deleteTaskButton"
+                                                    text="Delete"
+                                                    type="Reject"
+                                                    press=".onDeleteTask" />
+                                            </HBox>
+                                        </cells>
+                                    </ColumnListItem>
+                                </items>
+                            </Table>
+                        </IconTabFilter>
+
+                        <!-- INVOICES -->
+
+                        <IconTabFilter
+                            id="invoicesTab"
+                            key="invoices"
+                            text="Invoices"
+                            icon="sap-icon://sales-order"
+                            count="{admin>/invoices/length}">
+
+                            <Toolbar id="invoicesToolbar">
+                                <Title
+                                    id="invoicesTitle"
+                                    text="Invoice Management"
+                                    level="H2" />
+                                <ToolbarSpacer id="invoicesSpacer" />
+                                <SearchField
+                                    id="invoicesSearch"
+                                    width="16rem"
+                                    placeholder="Search Invoices..."
+                                    search=".onSearchInvoices" />
+                                <Button
+                                    id="generateInvoiceButton"
+                                    text="Generate Invoice"
+                                    icon="sap-icon://create-form"
+                                    type="Emphasized"
+                                    tooltip="Generate Invoice from Approved Timesheets"
+                                    press=".onOpenGenerateInvoiceDialog" />
+                            </Toolbar>
+
+                            <Table
+                                id="invoicesTable"
+                                items="{admin>/invoices}"
+                                growing="true"
+                                growingThreshold="20"
+                                noDataText="No Invoices available"
+                                alternateRowColors="true"
+                                autoPopinMode="true">
+
+                                <columns>
+                                    <Column id="colInvNumber" width="11rem">
+                                        <Text id="hdrInvNumber" text="Invoice" />
+                                    </Column>
+                                    <Column id="colInvClient" width="13rem" minScreenWidth="Tablet" demandPopin="true">
+                                        <Text id="hdrInvClient" text="Client" />
+                                    </Column>
+                                    <Column id="colInvProject" width="13rem" minScreenWidth="Tablet" demandPopin="true">
+                                        <Text id="hdrInvProject" text="Project" />
+                                    </Column>
+                                    <Column id="colInvDates" width="12rem" minScreenWidth="Desktop" demandPopin="true">
+                                        <Text id="hdrInvDates" text="Invoice / Due Date" />
+                                    </Column>
+                                    <Column id="colInvHours" width="7rem" hAlign="End" minScreenWidth="Desktop" demandPopin="true">
+                                        <Text id="hdrInvHours" text="Hours" />
+                                    </Column>
+                                    <Column id="colInvAmount" width="10rem" hAlign="End">
+                                        <Text id="hdrInvAmount" text="Payable Amount" />
+                                    </Column>
+                                    <Column id="colInvStatus" width="9rem" minScreenWidth="Tablet" demandPopin="true">
+                                        <Text id="hdrInvStatus" text="Status" />
+                                    </Column>
+                                    <Column id="colInvActions" width="16rem" hAlign="End">
+                                        <Text id="hdrInvActions" text="Actions" />
+                                    </Column>
+                                </columns>
+
+                                <items>
+                                    <ColumnListItem id="adminInvoiceRow" vAlign="Middle">
+                                        <cells>
+                                            <ObjectIdentifier
+                                                id="invRowIdentifier"
+                                                title="{admin>invoiceNumber}"
+                                                text="{admin>ID}" />
+                                            <Text id="invRowClient" text="{admin>clientName}" />
+                                            <ObjectIdentifier
+                                                id="invRowProject"
+                                                title="{admin>projectName}"
+                                                text="{admin>projectCode}" />
+                                            <VBox id="invRowDatesBox" renderType="Bare">
+                                                <Text id="invRowDateText" text="{= 'Inv: ' + ${admin>invoiceDate} }" />
+                                                <Text id="invRowDueText" text="{= 'Due: ' + ${admin>dueDate} }" />
+                                            </VBox>
+                                            <ObjectNumber
+                                                id="invRowHours"
+                                                number="{admin>billableHours}"
+                                                unit="hrs" />
+                                            <ObjectNumber
+                                                id="invRowAmount"
+                                                number="{admin>payableAmount}"
+                                                unit="{admin>currencyCode}"
+                                                emphasized="true" />
+                                            <VBox id="invRowStatusBox" renderType="Bare">
+                                                <ObjectStatus
+                                                    id="invRowPaymentStatus"
+                                                    text="{admin>paymentStatus}"
+                                                    state="{admin>statusState}" />
+                                                <Text id="invRowInvoiceStatus" text="{admin>status}" />
+                                            </VBox>
+                                            <HBox id="invRowActionsBox" justifyContent="End" wrap="Wrap">
+                                                <Button
+                                                    id="invDetailsBtn"
+                                                    text="View"
+                                                    icon="sap-icon://show"
+                                                    tooltip="View Invoice Details"
+                                                    type="Transparent"
+                                                    press=".onViewInvoiceDetails"
+                                                    class="sapUiTinyMarginEnd" />
+                                                <Button
+                                                    id="invIssueBtn"
+                                                    text="Issue"
+                                                    icon="sap-icon://paper-plane"
+                                                    type="Emphasized"
+                                                    visible="{admin>canIssue}"
+                                                    press=".onIssueInvoice"
+                                                    class="sapUiTinyMarginEnd" />
+                                                <Button
+                                                    id="invConfirmPaymentBtn"
+                                                    text="Mark Paid"
+                                                    icon="sap-icon://money-bills"
+                                                    type="Accept"
+                                                    visible="{admin>canConfirmPayment}"
+                                                    press=".onConfirmPayment" />
+                                                <ObjectStatus
+                                                    id="invPaidBadge"
+                                                    text="Paid"
+                                                    state="Success"
+                                                    icon="sap-icon://accept"
+                                                    visible="{admin>isPaid}" />
+                                            </HBox>
+                                        </cells>
+                                    </ColumnListItem>
+                                </items>
+                            </Table>
+                        </IconTabFilter>
+
+                        <!-- PAYMENTS -->
+
+                        <IconTabFilter
+                            id="paymentsTab"
+                            key="payments"
+                            text="Payments"
+                            icon="sap-icon://money-bills"
+                            count="{admin>/pendingPayments}">
+
+                            <Toolbar id="paymentsToolbar">
+                                <Title
+                                    id="paymentsTitle"
+                                    text="Payment Tracking"
+                                    level="H2" />
+                                <ToolbarSpacer id="paymentsToolbarSpacer" />
+                                <ObjectStatus
+                                    id="paymentsPendingStatus"
+                                    text="{= ${admin>/pendingPayments} + ' Pending' }"
+                                    state="{= ${admin>/pendingPayments} > 0 ? 'Warning' : 'Success' }"
+                                    icon="sap-icon://pending" />
+                            </Toolbar>
+
+                            <Table
+                                id="paymentsTable"
+                                items="{admin>/invoices}"
+                                growing="true"
+                                growingThreshold="20"
+                                noDataText="No Invoices available"
+                                alternateRowColors="true"
+                                autoPopinMode="true">
+
+                                <columns>
+                                    <Column id="invoiceNumberColumn" width="11rem">
+                                        <Text id="invoiceNumberHeader" text="Invoice" />
+                                    </Column>
+                                    <Column id="invoiceClientColumn" width="13rem" minScreenWidth="Tablet" demandPopin="true">
+                                        <Text id="invoiceClientHeader" text="Client" />
+                                    </Column>
+                                    <Column id="invoiceProjectColumn" width="13rem" minScreenWidth="Tablet" demandPopin="true">
+                                        <Text id="invoiceProjectHeader" text="Project" />
+                                    </Column>
+                                    <Column id="invoiceDueColumn" width="10rem" minScreenWidth="Desktop" demandPopin="true">
+                                        <Text id="invoiceDueHeader" text="Due Date" />
+                                    </Column>
+                                    <Column id="invoiceAmountColumn" width="10rem" hAlign="End">
+                                        <Text id="invoiceAmountHeader" text="Amount" />
+                                    </Column>
+                                    <Column id="invoiceStatusColumn" width="8rem" minScreenWidth="Tablet" demandPopin="true">
+                                        <Text id="invoiceStatusHeader" text="Status" />
+                                    </Column>
+                                    <Column id="invoiceActionColumn" width="12rem" hAlign="End">
+                                        <Text id="invoiceActionHeader" text="Action" />
+                                    </Column>
+                                </columns>
+
+                                <items>
+                                    <ColumnListItem id="invoiceRow" vAlign="Middle">
+                                        <cells>
+                                            <ObjectIdentifier
+                                                id="invoiceIdentifier"
+                                                title="{admin>invoiceNumber}"
+                                                text="{admin>ID}" />
+                                            <Text id="invoiceClient" text="{admin>clientName}" />
+                                            <ObjectIdentifier
+                                                id="invoiceProject"
+                                                title="{admin>projectName}"
+                                                text="{admin>projectCode}" />
+                                            <Text id="invoiceDue" text="{admin>dueDate}" />
+                                            <ObjectNumber
+                                                id="invoiceAmount"
+                                                number="{admin>payableAmount}"
+                                                unit="{admin>currencyCode}"
+                                                emphasized="true" />
+                                            <ObjectStatus
+                                                id="invoiceStatus"
+                                                text="{admin>paymentStatus}"
+                                                state="{admin>statusState}" />
+                                            <HBox id="invoiceAction" justifyContent="End" wrap="Wrap">
+                                                <Button
+                                                    id="confirmPaymentButton"
+                                                    text="Confirm Payment"
+                                                    icon="sap-icon://accept"
+                                                    type="Accept"
+                                                    visible="{admin>canConfirmPayment}"
+                                                    press=".onConfirmPayment" />
+                                                <ObjectStatus
+                                                    id="invoicePaidStatus"
+                                                    text="Paid"
+                                                    state="Success"
+                                                    icon="sap-icon://accept"
+                                                    visible="{admin>isPaid}" />
+                                            </HBox>
+                                        </cells>
+                                    </ColumnListItem>
+                                </items>
+                            </Table>
+                        </IconTabFilter>
+
+                        <!-- DATA ISSUES -->
+
+                        <IconTabFilter
+                            id="issuesTab"
+                            key="issues"
+                            text="Data Issues"
+                            icon="sap-icon://alert"
+                            count="{admin>/dataIssues}">
+
+                            <MessageStrip
+                                id="issuesMessage"
+                                text="Resolve invalid associations before time entry or invoicing."
+                                type="Warning"
+                                showIcon="true"
+                                showCloseButton="false" />
+
+                            <Table
+                                id="issuesTable"
+                                items="{admin>/issues}"
+                                noDataText="No data issues found">
+
+                                <columns>
+                                    <Column id="issueTypeColumn">
+                                        <Text id="issueTypeHeader" text="Type" />
+                                    </Column>
+                                    <Column id="issueRecordColumn">
+                                        <Text id="issueRecordHeader" text="Record" />
+                                    </Column>
+                                    <Column id="issueTextColumn">
+                                        <Text id="issueTextHeader" text="Issue" />
+                                    </Column>
+                                    <Column id="issueSeverityColumn">
+                                        <Text id="issueSeverityHeader" text="Severity" />
+                                    </Column>
+                                </columns>
+
+                                <items>
+                                    <ColumnListItem id="issueRow">
+                                        <cells>
+                                            <Text id="issueType" text="{admin>type}" />
+                                            <Text id="issueRecord" text="{admin>record}" />
+                                            <Text id="issueText" text="{admin>issue}" />
+                                            <ObjectStatus
+                                                id="issueSeverity"
+                                                text="{admin>severity}"
+                                                state="{= ${admin>severity} === 'Error' ? 'Error' : 'Warning' }" />
+                                        </cells>
+                                    </ColumnListItem>
+                                </items>
+                            </Table>
+                        </IconTabFilter>
+
+                    </items>
+                </IconTabBar>
+
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>

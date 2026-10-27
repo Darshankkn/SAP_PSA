@@ -1,0 +1,660 @@
+<mvc:View
+    controllerName="employeed.controller.View1"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    displayBlock="true">
+
+    <Page
+        id="employeePage"
+        title="Employee Dashboard"
+        showNavButton="false">
+
+        <headerContent>
+
+            <Button
+                id="refreshButton"
+                text="Refresh"
+                icon="sap-icon://refresh"
+                tooltip="Refresh Employee Dashboard"
+                press=".onRefresh" />
+
+        </headerContent>
+
+        <content>
+
+            <VBox
+                id="employeeContent"
+                class="sapUiMediumMargin">
+
+                <Title
+                    id="employeeDashboardTitle"
+                    text="Employee Timesheet Dashboard"
+                    level="H1" />
+
+                <Text
+                    id="employeeName"
+                    text="{= 'Welcome, ' + ${employeeDashboard>/employeeName} }"
+                    class="sapUiSmallMarginTop sapUiSmallMarginBottom" />
+
+                <!-- KPI CARDS -->
+
+                <HBox
+                    id="kpiContainer"
+                    wrap="Wrap"
+                    alignItems="Start"
+                    justifyContent="Start"
+                    class="sapUiSmallMarginTop sapUiSmallMarginBottom">
+
+                    <GenericTile
+                        id="draftTile"
+                        header="Draft"
+                        subheader="Timesheets"
+                        class="sapUiTinyMarginEnd sapUiTinyMarginBottom">
+
+                        <TileContent
+                            id="draftTileContent">
+
+                            <NumericContent
+                                id="draftValue"
+                                value="{employeeDashboard>/draftCount}"
+                                icon="sap-icon://document"
+                                valueColor="Neutral"
+                                withMargin="false" />
+
+                        </TileContent>
+
+                    </GenericTile>
+
+                    <GenericTile
+                        id="submittedTile"
+                        header="Submitted"
+                        subheader="Awaiting approval"
+                        class="sapUiTinyMarginEnd sapUiTinyMarginBottom">
+
+                        <TileContent
+                            id="submittedTileContent">
+
+                            <NumericContent
+                                id="submittedValue"
+                                value="{employeeDashboard>/submittedCount}"
+                                icon="sap-icon://pending"
+                                valueColor="Critical"
+                                withMargin="false" />
+
+                        </TileContent>
+
+                    </GenericTile>
+
+                    <GenericTile
+                        id="approvedTile"
+                        header="Approved"
+                        subheader="Approved Timesheets"
+                        class="sapUiTinyMarginEnd sapUiTinyMarginBottom">
+
+                        <TileContent
+                            id="approvedTileContent">
+
+                            <NumericContent
+                                id="approvedValue"
+                                value="{employeeDashboard>/approvedCount}"
+                                icon="sap-icon://accept"
+                                valueColor="Good"
+                                withMargin="false" />
+
+                        </TileContent>
+
+                    </GenericTile>
+
+                    <GenericTile
+                        id="rejectedTile"
+                        header="Rejected"
+                        subheader="Needs correction"
+                        class="sapUiTinyMarginEnd sapUiTinyMarginBottom">
+
+                        <TileContent
+                            id="rejectedTileContent">
+
+                            <NumericContent
+                                id="rejectedValue"
+                                value="{employeeDashboard>/rejectedCount}"
+                                icon="sap-icon://decline"
+                                valueColor="Error"
+                                withMargin="false" />
+
+                        </TileContent>
+
+                    </GenericTile>
+
+                    <GenericTile
+                        id="loggedHoursTile"
+                        header="Logged Hours"
+                        subheader="All Entries"
+                        class="sapUiTinyMarginEnd sapUiTinyMarginBottom">
+
+                        <TileContent
+                            id="loggedHoursTileContent">
+
+                            <NumericContent
+                                id="loggedHoursValue"
+                                value="{employeeDashboard>/totalLoggedHours}"
+                                scale="hrs"
+                                icon="sap-icon://time-entry-request"
+                                valueColor="Neutral"
+                                withMargin="false" />
+
+                        </TileContent>
+
+                    </GenericTile>
+
+                    <GenericTile
+                        id="billableHoursTile"
+                        header="Billable Hours"
+                        subheader="Billable Entries"
+                        class="sapUiTinyMarginEnd sapUiTinyMarginBottom">
+
+                        <TileContent
+                            id="billableHoursTileContent">
+
+                            <NumericContent
+                                id="billableHoursValue"
+                                value="{employeeDashboard>/totalBillableHours}"
+                                scale="hrs"
+                                icon="sap-icon://money-bills"
+                                valueColor="Good"
+                                withMargin="false" />
+
+                        </TileContent>
+
+                    </GenericTile>
+
+                </HBox>
+
+                <!-- TIMESHEET TOOLBAR -->
+
+                <Toolbar
+                    id="timesheetsToolbar"
+                    class="sapUiSmallMarginTop">
+
+                    <Title
+                        id="timesheetsTitle"
+                        text="My Timesheets"
+                        level="H2" />
+
+                    <ToolbarSpacer
+                        id="timesheetsToolbarSpacer" />
+
+                    <Button
+                        id="createTimesheetButton"
+                        text="Create Timesheet"
+                        icon="sap-icon://add"
+                        type="Emphasized"
+                        tooltip="Create a new Draft Timesheet"
+                        press=".onCreateTimesheet"
+                        class="sapUiTinyMarginEnd" />
+
+                    <ObjectStatus
+                        id="timesheetCount"
+                        text="{= ${employeeDashboard>/timesheets}.length + ' records' }"
+                        state="Information" />
+
+                </Toolbar>
+
+                <!-- TIMESHEET TABLE -->
+
+                <Table
+                    id="timesheetsTable"
+                    items="{employeeDashboard>/timesheets}"
+                    mode="SingleSelectMaster"
+                    selectionChange=".onTimesheetSelect"
+                    growing="true"
+                    growingThreshold="10"
+                    growingScrollToLoad="false"
+                    noDataText="No Timesheets are available"
+                    class="sapUiSmallMarginBottom">
+
+                    <columns>
+
+                        <Column
+                            id="weekStartColumn"
+                            width="9rem">
+
+                            <Text
+                                id="weekStartColumnText"
+                                text="Week Start" />
+
+                        </Column>
+
+                        <Column
+                            id="weekEndColumn"
+                            width="9rem">
+
+                            <Text
+                                id="weekEndColumnText"
+                                text="Week End" />
+
+                        </Column>
+
+                        <Column
+                            id="totalHoursColumn"
+                            width="8rem"
+                            hAlign="End">
+
+                            <Text
+                                id="totalHoursColumnText"
+                                text="Total Hours" />
+
+                        </Column>
+
+                        <Column
+                            id="billableHoursColumn"
+                            width="9rem"
+                            hAlign="End">
+
+                            <Text
+                                id="billableHoursColumnText"
+                                text="Billable Hours" />
+
+                        </Column>
+
+                        <Column
+                            id="statusColumn"
+                            width="9rem">
+
+                            <Text
+                                id="statusColumnText"
+                                text="Status" />
+
+                        </Column>
+
+                        <Column
+                            id="submittedDateColumn"
+                            width="10rem">
+
+                            <Text
+                                id="submittedDateColumnText"
+                                text="Submitted Date" />
+
+                        </Column>
+
+                        <Column
+                            id="approvedDateColumn"
+                            width="10rem">
+
+                            <Text
+                                id="approvedDateColumnText"
+                                text="Approved Date" />
+
+                        </Column>
+
+                        <Column
+                            id="rejectionReasonColumn">
+
+                            <Text
+                                id="rejectionReasonColumnText"
+                                text="Rejection Reason" />
+
+                        </Column>
+
+                        <Column
+                            id="timesheetActionsColumn"
+                            width="8rem"
+                            hAlign="End">
+
+                            <Text
+                                id="timesheetActionsColumnText"
+                                text="Actions" />
+
+                        </Column>
+
+                    </columns>
+
+                    <items>
+
+                        <ColumnListItem
+                            id="timesheetRow"
+                            type="Active"
+                            vAlign="Middle">
+
+                            <cells>
+
+                                <Text
+                                    id="weekStart"
+                                    text="{employeeDashboard>weekStartDate}" />
+
+                                <Text
+                                    id="weekEnd"
+                                    text="{employeeDashboard>weekEndDate}" />
+
+                                <ObjectNumber
+                                    id="totalHours"
+                                    number="{employeeDashboard>totalHours}"
+                                    unit="hrs" />
+
+                                <ObjectNumber
+                                    id="billableHours"
+                                    number="{employeeDashboard>totalBillableHours}"
+                                    unit="hrs" />
+
+                                <ObjectStatus
+                                    id="timesheetStatus"
+                                    text="{employeeDashboard>status}"
+                                    state="{employeeDashboard>statusState}" />
+
+                                <Text
+                                    id="submittedDate"
+                                    text="{employeeDashboard>submittedDate}" />
+
+                                <Text
+                                    id="approvedDate"
+                                    text="{employeeDashboard>approvedDate}" />
+
+                                <Text
+                                    id="rejectionReason"
+                                    text="{employeeDashboard>rejectionReason}" />
+
+                                <HBox
+                                    id="timesheetRowActionsBox"
+                                    justifyContent="End">
+
+                                    <Button
+                                        id="btnEditTimesheetRow"
+                                        text="{= ${employeeDashboard>canEdit} ? 'Edit' : 'View' }"
+                                        icon="{= ${employeeDashboard>canEdit} ? 'sap-icon://edit' : 'sap-icon://show' }"
+                                        type="{= ${employeeDashboard>canEdit} ? 'Emphasized' : 'Transparent' }"
+                                        tooltip="{= ${employeeDashboard>canEdit} ? 'Edit Timesheet Entries and Dates' : 'View Timesheet Entries' }"
+                                        press=".onEditTimesheetFromRow" />
+
+                                </HBox>
+
+                            </cells>
+
+                        </ColumnListItem>
+
+                    </items>
+
+                </Table>
+
+                <!-- SELECTED TIMESHEET PANEL -->
+
+                <Panel
+                    id="timesheetEntriesPanel"
+                    expandable="true"
+                    expanded="true"
+                    visible="{employeeDashboard>/showEntriesPanel}"
+                    class="sapUiSmallMarginTop">
+
+                    <headerToolbar>
+
+                        <Toolbar
+                            id="entriesToolbar">
+
+                            <Title
+                                id="entriesTitle"
+                                text="Selected Timesheet Entries"
+                                level="H2" />
+
+                            <ToolbarSpacer
+                                id="entriesToolbarSpacer" />
+
+                            <ObjectStatus
+                                id="selectedTimesheetStatus"
+                                text="{employeeDashboard>/selectedTimesheet/status}"
+                                state="{employeeDashboard>/selectedTimesheet/statusState}"
+                                class="sapUiTinyMarginEnd" />
+
+                            <Button
+                                id="editTimesheetDatesButton"
+                                text="Edit Dates"
+                                icon="sap-icon://edit"
+                                tooltip="Edit Timesheet Week Dates"
+                                enabled="{employeeDashboard>/selectedTimesheet/canEdit}"
+                                press=".onEditTimesheetDates"
+                                class="sapUiTinyMarginEnd" />
+
+                            <Button
+                                id="addEntryButton"
+                                text="Add Entry"
+                                icon="sap-icon://add"
+                                type="Emphasized"
+                                tooltip="Add hours to the selected Timesheet"
+                                enabled="{employeeDashboard>/selectedTimesheet/canEdit}"
+                                press=".onAddEntry"
+                                class="sapUiTinyMarginEnd" />
+
+                            <Button
+                                id="submitTimesheetButton"
+                                text="Submit Timesheet"
+                                icon="sap-icon://paper-plane"
+                                type="Accept"
+                                tooltip="Submit Timesheet for Manager approval"
+                                enabled="{employeeDashboard>/selectedTimesheet/canSubmit}"
+                                press=".onSubmitSelectedTimesheet"
+                                class="sapUiTinyMarginEnd" />
+
+                            <Button
+                                id="closeEntriesButton"
+                                text="Close"
+                                icon="sap-icon://decline"
+                                press=".onCloseEntries" />
+
+                        </Toolbar>
+
+                    </headerToolbar>
+
+                    <content>
+
+                        <!-- REJECTION REASON -->
+
+                        <MessageStrip
+                            id="rejectionMessage"
+                            text="{= 'Rejection Reason: ' + ${employeeDashboard>/selectedTimesheet/rejectionReason} }"
+                            type="Error"
+                            showIcon="true"
+                            showCloseButton="false"
+                            visible="{= ${employeeDashboard>/selectedTimesheet/status} === 'Rejected' }"
+                            class="sapUiSmallMargin" />
+
+                        <!-- SELECTED TIMESHEET SUMMARY -->
+
+                        <HBox
+                            id="selectedTimesheetSummary"
+                            wrap="Wrap"
+                            class="sapUiSmallMargin">
+
+                            <VBox
+                                id="selectedTotalHoursBox"
+                                class="sapUiMediumMarginEnd">
+
+                                <Label
+                                    id="selectedTotalHoursLabel"
+                                    text="Total Hours" />
+
+                                <ObjectNumber
+                                    id="selectedTotalHours"
+                                    number="{employeeDashboard>/selectedTimesheet/totalHours}"
+                                    unit="hrs" />
+
+                            </VBox>
+
+                            <VBox
+                                id="selectedBillableHoursBox"
+                                class="sapUiMediumMarginEnd">
+
+                                <Label
+                                    id="selectedBillableHoursLabel"
+                                    text="Billable Hours" />
+
+                                <ObjectNumber
+                                    id="selectedBillableHours"
+                                    number="{employeeDashboard>/selectedTimesheet/totalBillableHours}"
+                                    unit="hrs" />
+
+                            </VBox>
+
+                            <VBox
+                                id="selectedWeekStartBox"
+                                class="sapUiMediumMarginEnd">
+
+                                <Label
+                                    id="selectedWeekStartLabel"
+                                    text="Week Start" />
+
+                                <Text
+                                    id="selectedWeekStart"
+                                    text="{employeeDashboard>/selectedTimesheet/weekStartDate}" />
+
+                            </VBox>
+
+                            <VBox
+                                id="selectedWeekEndBox">
+
+                                <Label
+                                    id="selectedWeekEndLabel"
+                                    text="Week End" />
+
+                                <Text
+                                    id="selectedWeekEnd"
+                                    text="{employeeDashboard>/selectedTimesheet/weekEndDate}" />
+
+                            </VBox>
+
+                        </HBox>
+
+                        <!-- TIMESHEET ENTRIES TABLE -->
+
+                        <Table
+                            id="timesheetEntriesTable"
+                            items="{employeeDashboard>/selectedTimesheet/entries}"
+                            growing="true"
+                            growingThreshold="10"
+                            growingScrollToLoad="false"
+                            noDataText="No Timesheet Entries are available">
+
+                            <columns>
+
+                                <Column
+                                    id="entryTaskColumn">
+
+                                    <Text
+                                        id="entryTaskColumnText"
+                                        text="Task" />
+
+                                </Column>
+
+                                <Column
+                                    id="entryWorkDateColumn"
+                                    width="10rem">
+
+                                    <Text
+                                        id="entryWorkDateColumnText"
+                                        text="Work Date" />
+
+                                </Column>
+
+                                <Column
+                                    id="entryHoursColumn"
+                                    width="8rem"
+                                    hAlign="End">
+
+                                    <Text
+                                        id="entryHoursColumnText"
+                                        text="Hours" />
+
+                                </Column>
+
+                                <Column
+                                    id="entryBillableColumn"
+                                    width="8rem"
+                                    hAlign="Center">
+
+                                    <Text
+                                        id="entryBillableColumnText"
+                                        text="Billable" />
+
+                                </Column>
+
+                                <Column
+                                    id="entryActionsColumn"
+                                    width="14rem"
+                                    hAlign="Center">
+
+                                    <Text
+                                        id="entryActionsColumnText"
+                                        text="Actions" />
+
+                                </Column>
+
+                            </columns>
+
+                            <items>
+
+                                <ColumnListItem
+                                    id="entryRow"
+                                    type="Inactive"
+                                    vAlign="Middle">
+
+                                    <cells>
+
+                                        <ObjectIdentifier
+                                            id="entryTask"
+                                            title="{employeeDashboard>taskName}"
+                                            text="{employeeDashboard>taskID}" />
+
+                                        <Text
+                                            id="entryWorkDate"
+                                            text="{employeeDashboard>workDate}" />
+
+                                        <ObjectNumber
+                                            id="entryHours"
+                                            number="{employeeDashboard>hours}"
+                                            unit="hrs" />
+
+                                        <ObjectStatus
+                                            id="entryBillable"
+                                            text="{= ${employeeDashboard>billable} ? 'Yes' : 'No' }"
+                                            state="{= ${employeeDashboard>billable} ? 'Success' : 'None' }" />
+
+                                        <HBox
+                                            id="entryActionButtons"
+                                            wrap="Wrap"
+                                            justifyContent="Center">
+
+                                            <Button
+                                                id="editEntryButton"
+                                                text="Edit"
+                                                icon="sap-icon://edit"
+                                                tooltip="Edit this Timesheet Entry"
+                                                enabled="{employeeDashboard>/selectedTimesheet/canEdit}"
+                                                press=".onEditEntry"
+                                                class="sapUiTinyMarginEnd" />
+
+                                            <Button
+                                                id="deleteEntryButton"
+                                                text="Delete"
+                                                icon="sap-icon://delete"
+                                                type="Reject"
+                                                tooltip="Delete this Timesheet Entry"
+                                                enabled="{employeeDashboard>/selectedTimesheet/canEdit}"
+                                                press=".onDeleteEntry" />
+
+                                        </HBox>
+
+                                    </cells>
+
+                                </ColumnListItem>
+
+                            </items>
+
+                        </Table>
+
+                    </content>
+
+                </Panel>
+
+            </VBox>
+
+        </content>
+
+    </Page>
+
+</mvc:View>

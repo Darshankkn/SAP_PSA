@@ -1,0 +1,51 @@
+{
+  "name": "enterprisepsa",
+  "version": "1.0.0",
+  "description": "Welcome to your new CAP project.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch-project1": "cds watch --open project1/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-project2": "cds watch --open enterprisepsa.project2/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-project3": "cds watch --open project3/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-project4": "cds watch --open project4/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-managerdashboard": "cds watch --open managerdashboard/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-manager": "cds watch --open manager/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-employee": "cds watch --open employee/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-employeed": "cds watch --open employeed/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-admin": "cds watch --open admin/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-dashboardhub": "cds watch --open dashboardhub.dashboardhub/index.html?sap-ui-xx-viewCache=false --livereload false"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@cap-js/hana": "^3.1.2",
+    "@cap-js/sqlite": "^3.1.2",
+    "@sap/cds": "^10.1.1",
+    "sqlite": "^5.1.1",
+    "@sap/xssec": "^4"
+  },
+  "workspaces": [
+    "app/*"
+  ],
+  "devDependencies": {
+    "@sap/cds-dk": "^10",
+    "cds-plugin-ui5": "^0.17.0"
+  },
+  "sapux": [
+    "app/project1",
+    "app/project2",
+    "app/project3",
+    "app/project4",
+    "app/managerdashboard"
+  ],
+  "cds": {
+    "requires": {
+      "[production]": {
+        "auth": "xsuaa"
+      }
+    }
+  }
+}

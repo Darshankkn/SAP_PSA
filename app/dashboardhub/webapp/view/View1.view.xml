@@ -1,0 +1,161 @@
+
+<mvc:View
+    controllerName="dashboardhub.dashboardhub.controller.View1"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    displayBlock="true">
+
+    <Page
+        id="dashboardHubPage"
+        title="PSA Dashboard Hub"
+        class="psaHubPage">
+
+        <content>
+            <VBox
+                id="dashboardHubContent"
+                width="100%"
+                alignItems="Center"
+                class="psaHubContent">
+
+                <Title
+                    id="dashboardHubTitle"
+                    text="Professional Services Automation"
+                    level="H1"
+                    class="psaHubTitle" />
+
+                <Text
+                    id="dashboardHubSubtitle"
+                    text="One workspace. Three dashboards. Everything in control."
+                    class="psaHubSubtitle" />
+
+                <HBox
+                    id="dashboardHubCards"
+                    width="100%"
+                    wrap="Wrap"
+                    justifyContent="Center"
+                    alignItems="Stretch"
+                    class="psaHubCards">
+
+                    <!-- Employee Dashboard Card -->
+                    <VBox
+                        id="employeeDashboardCard"
+                        width="18rem"
+                        alignItems="Center"
+                        justifyContent="Center"
+                        class="psaHubCard">
+
+                        <core:Icon
+                            id="employeeDashboardIcon"
+                            src="sap-icon://employee"
+                            size="2.5rem"
+                            color="#168b9a"
+                            class="psaHubIcon" />
+
+                        <Title
+                            id="employeeDashboardTitle"
+                            text="Employee"
+                            level="H3"
+                            class="psaHubCardTitle" />
+
+                        <Text
+                            id="employeeDashboardDescription"
+                            text="Manage timesheets and track your work."
+                            textAlign="Center"
+                            class="psaHubCardText" />
+
+                        <Button
+                            id="employeeDashboardButton"
+                            text="Open Dashboard"
+                            icon="sap-icon://arrow-right"
+                            iconFirst="false"
+                            type="Emphasized"
+                            width="100%"
+                            press=".onEmployeePress"
+                            class="psaHubButton" />
+
+                    </VBox>
+
+                    <!-- Manager Dashboard Card -->
+                    <VBox
+                        id="managerDashboardCard"
+                        width="18rem"
+                        alignItems="Center"
+                        justifyContent="Center"
+                        class="psaHubCard">
+
+                        <core:Icon
+                            id="managerDashboardIcon"
+                            src="sap-icon://manager"
+                            size="2.5rem"
+                            color="#4169a1"
+                            class="psaHubIcon" />
+
+                        <Title
+                            id="managerDashboardTitle"
+                            text="Manager"
+                            level="H3"
+                            class="psaHubCardTitle" />
+
+                        <Text
+                            id="managerDashboardDescription"
+                            text="Review projects, approvals and team progress."
+                            textAlign="Center"
+                            class="psaHubCardText" />
+
+                        <Button
+                            id="managerDashboardButton"
+                            text="Open Dashboard"
+                            icon="sap-icon://arrow-right"
+                            iconFirst="false"
+                            type="Emphasized"
+                            width="100%"
+                            press=".onManagerPress"
+                            class="psaHubButton" />
+
+                    </VBox>
+
+                    <!-- Admin Dashboard Card -->
+                    <VBox
+                        id="adminDashboardCard"
+                        width="18rem"
+                        alignItems="Center"
+                        justifyContent="Center"
+                        class="psaHubCard">
+
+                        <core:Icon
+                            id="adminDashboardIcon"
+                            src="sap-icon://it-system"
+                            size="2.5rem"
+                            color="#8b65b5"
+                            class="psaHubIcon" />
+
+                        <Title
+                            id="adminDashboardTitle"
+                            text="Admin &amp; Finance"
+                            level="H3"
+                            class="psaHubCardTitle" />
+
+                        <Text
+                            id="adminDashboardDescription"
+                            text="Manage master data, projects, invoices, and payments."
+                            textAlign="Center"
+                            class="psaHubCardText" />
+
+                        <Button
+                            id="adminDashboardButton"
+                            text="Open Dashboard"
+                            icon="sap-icon://arrow-right"
+                            iconFirst="false"
+                            type="Emphasized"
+                            width="100%"
+                            press=".onAdminPress"
+                            class="psaHubButton" />
+
+                    </VBox>
+
+                </HBox>
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>

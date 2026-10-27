@@ -1,0 +1,937 @@
+@server = http://localhost:4004/odata/v4/catalog
+
+###########################################################
+# DEPARTMENT
+###########################################################
+
+POST http://localhost:4004/odata/v4/catalog/createDepartment
+Content-Type: application/json
+
+{
+    "departmentName": "Information Technology",
+    "description": "Handles SAP CAP Development"
+}
+
+###
+
+GET {{server}}/Departments
+
+###########################################################
+# CLIENT
+###########################################################
+
+POST {{server}}/createClient
+Content-Type: application/json
+
+{
+    "clientName": "Microsoft",
+    "contactPerson": "John Smith",
+    "email": "john@microsoft.com",
+    "phoneNumber": "+1-1234567890",
+    "country": "USA",
+    "industry": "Technology",
+    "status": "Active"
+}
+
+###
+
+GET {{server}}/Clients
+
+###########################################################
+# EMPLOYEE
+# Replace departmentID with actual Department ID
+###########################################################
+
+POST {{server}}/createEmployee
+Content-Type: application/json
+
+{
+    "firstName": "Aditya",
+    "lastName": "Reddy",
+    "email": "aditya@company.com",
+    "jobTitle": "SAP CAP Developer",
+    "joinDate": "2026-10-01",
+    "hourlyRate": 1000,
+    "status": "Active",
+    "departmentID": "PUT_DEPARTMENT_ID_HERE"
+}
+
+###
+
+GET {{server}}/Employees
+
+###########################################################
+# MANAGER
+# Replace employeeID and departmentID
+###########################################################
+
+POST {{server}}/createManager
+Content-Type: application/json
+
+{
+    "employeeID": "PUT_EMPLOYEE_ID_HERE",
+    "departmentID": "PUT_DEPARTMENT_ID_HERE",
+    "managerLevel": "L1",
+    "status": "Active"
+}
+
+###
+
+GET {{server}}/Managers
+
+###########################################################
+# PROJECT
+# Replace clientID and managerID
+###########################################################
+
+POST {{server}}/createProject
+Content-Type: application/json
+
+{
+    "projectCode": "PSA001",
+    "projectName": "Enterprise PSA",
+    "status": "Active",
+    "billingType": "TimeAndMaterial",
+    "startDate": "2026-10-01",
+    "endDate": "2027-03-31",
+    "plannedHours": 1200,
+    "consumedHours": 0,
+    "clientID": "PUT_CLIENT_ID_HERE",
+    "managerID": "PUT_MANAGER_ID_HERE"
+}
+
+###
+
+GET {{server}}/Projects
+
+###########################################################
+# BUDGET
+# Replace projectID
+###########################################################
+
+POST {{server}}/createBudget
+Content-Type: application/json
+
+{
+    "projectID": "PUT_PROJECT_ID_HERE",
+    "budgetAmount": 1000000,
+    "consumedAmount": 0,
+    "remainingAmount": 1000000,
+    "billingRateHr": 100,
+    "currencyCode": "USD",
+    "budgetStatus": "OnTrack"
+}
+
+###
+
+GET {{server}}/Budgets
+
+###########################################################
+# MILESTONE
+# Replace projectID
+###########################################################
+
+POST {{server}}/createMilestone
+Content-Type: application/json
+
+{
+    "projectID": "PUT_PROJECT_ID_HERE",
+    "milestoneName": "Development Phase",
+    "startDate": "2026-10-15",
+    "endDate": "2026-12-15",
+    "completionPercent": 0,
+    "status": "NotStarted"
+}
+
+###
+
+GET {{server}}/Milestones
+
+###########################################################
+# TASK
+# Replace milestoneID
+###########################################################
+
+POST {{server}}/createTask
+Content-Type: application/json
+
+{
+    "milestoneID": "PUT_MILESTONE_ID_HERE",
+    "taskName": "Develop CAP Services",
+    "startDate": "2026-10-16",
+    "endDate": "2026-11-30",
+    "status": "NotStarted",
+    "estimatedHours": 200,
+    "actualHours": 0
+}
+
+###
+
+GET {{server}}/Tasks
+
+###########################################################
+# INVOICE
+# Replace projectID and clientID
+###########################################################
+
+POST {{server}}/createInvoice
+Content-Type: application/json
+
+{
+    "invoiceNumber": "INV001",
+    "projectID": "PUT_PROJECT_ID_HERE",
+    "clientID": "PUT_CLIENT_ID_HERE",
+    "invoiceDate": "2026-11-01",
+    "dueDate": "2026-11-30",
+    "billableHours": 100,
+    "totalAmount": 10000,
+    "taxAmount": 1000,
+    "currencyCode": "USD",
+    "paymentStatus": "Pending",
+    "status": "Draft"
+}
+
+###
+
+GET {{server}}/Invoices
+
+###########################################################
+# TIMESHEET
+# Replace employeeID managerID invoiceID
+###########################################################
+
+POST {{server}}/createTimesheet
+Content-Type: application/json
+
+{
+    "employeeID": "PUT_EMPLOYEE_ID_HERE",
+    "approvedByID": "PUT_MANAGER_ID_HERE",
+    "invoiceID": "PUT_INVOICE_ID_HERE",
+    "weekStartDate": "2026-10-12",
+    "weekEndDate": "2026-10-18",
+    "totalBillableHours": 40,
+    "submittedDate": "2026-10-18",
+    "approvedDate": null,
+    "status": "Draft"
+}
+
+###
+
+GET {{server}}/Timesheets
+
+###########################################################
+# TIMESHEET ENTRY
+# Replace timesheetID and taskID
+###########################################################
+
+POST {{server}}/createTimesheetEntry
+Content-Type: application/json
+
+{
+    "timesheetID": "PUT_TIMESHEET_ID_HERE",
+    "taskID": "PUT_TASK_ID_HERE",
+    "workDate": "2026-10-13",
+    "hours": 8,
+    "billable": true
+}
+
+###
+
+GET {{server}}/TimesheetEntries
+
+###########################################################
+# BUSINESS ACTIONS
+###########################################################
+
+POST {{server}}/submitTimesheet
+Content-Type: application/json
+
+{
+    "ID": "PUT_TIMESHEET_ID_HERE"
+}
+
+###
+
+POST {{server}}/approveTimesheet
+Content-Type: application/json
+
+{
+    "ID": "PUT_TIMESHEET_ID_HERE"
+}
+
+###
+
+POST {{server}}/rejectTimesheet
+Content-Type: application/json
+
+{
+    "ID": "PUT_TIMESHEET_ID_HERE",
+    "reason": "Incorrect Hours"
+}
+
+###
+
+POST {{server}}/issueInvoice
+Content-Type: application/json
+
+{
+    "ID": "PUT_INVOICE_ID_HERE"
+}
+
+###
+
+POST {{server}}/markInvoicePaid
+Content-Type: application/json
+
+{
+    "ID": "PUT_INVOICE_ID_HERE"
+}
+
+###########################################################
+# FINAL VERIFICATION
+###########################################################
+
+###
+
+GET {{server}}/Departments?$expand=employees
+
+###
+
+GET {{server}}/Projects
+
+###
+
+GET {{server}}/Timesheets
+
+###
+
+GET {{server}}/Invoices
+
+###
+
+GET {{server}}/Tasks
+
+###
+
+GET {{server}}/TimesheetEntries
+
+###
+
+POST http://localhost:4004/odata/v4/catalog/createTimesheet
+Content-Type: application/json
+
+{
+  "employeeID":"11111111-1111-1111-1111-111111111111",
+  "weekStartDate":"2026-10-19",
+  "weekEndDate":"2026-10-25",
+  "status":"Draft"
+}
+###
+POST http://localhost:4004/odata/v4/catalog/createTimesheetEntry
+Content-Type: application/json
+
+{
+  "timesheetID":"12",
+  "taskID":"22222222-2222-2222-2222-222222222222",
+  "workDate":"2026-10-20",
+  "hours":8,
+  "billable":true
+}
+###
+POST http://localhost:4004/odata/v4/catalog/submitTimesheet
+Content-Type: application/json
+
+{
+  "ID":"3581ffea-6172-4583-a4c3-ddce45d4e315"
+}
+
+###
+
+GET http://localhost:4004/odata/v4/catalog/Timesheets
+
+###
+POST http://localhost:4004/odata/v4/catalog/approveTimesheet
+Content-Type: application/json
+
+{
+
+
+  "ID": "3581ffea-6172-4583-a4c3-ddce45d4e315"
+}
+
+
+
+###
+POST http://localhost:4004/odata/v4/catalog/createTimesheet
+Content-Type: application/json
+
+{
+  "employeeID":"11111111-1111-1111-1111-111111111111",
+  "weekStartDate":"2026-10-19",
+  "weekEndDate":"2026-10-25",
+  "totalBillableHours":8,
+  "status":"Draft"
+}
+
+###
+POST http://localhost:4004/odata/v4/catalog/createTimesheetEntry
+Content-Type: application/json
+
+{
+  "timesheetID":"de8adedf-bc0b-4ba6-99f9-b419d628eh79",
+  "taskID":"22222222-2222-2222-2222-222222222223",
+  "workDate":"2026-10-20",
+  "hours":8,
+  "billable":true
+}
+###
+POST http://localhost:4004/odata/v4/catalog/submitTimesheet
+Content-Type: application/json
+
+{
+  "ID":"de8adedf-bc0b-4ba6-99f9-b419d628eh79"
+}
+
+###
+POST http://localhost:4004/odata/v4/catalog/rejectTimesheet
+Content-Type: application/json
+
+{
+    "ID": "de8adedf-bc0b-4ba6-99f9-b419d628eh79",
+    "reason": "Incorrect hours entered"
+}
+
+###
+POST http://localhost:4004/odata/v4/catalog/createTimesheet
+Content-Type: application/json
+
+{
+  "employeeID":"11111111-1111-1111-1111-111111111112",
+  "approvedByID":"22222222-2222-2222-2222-222222222223",
+  "weekStartDate":"2026-10-19",
+  "weekEndDate":"2026-10-25",
+  "totalBillableHours":8,
+  "status":"Draft"
+}
+###
+
+GET http://localhost:4004/odata/v4/catalog/Timesheets
+
+
+###
+POST http://localhost:4004/odata/v4/catalog/submitTimesheet
+Content-Type: application/json
+
+{
+   "ID":"9f6f3574-7318-4197-81b0-2fafb072b11e"
+}
+###
+POST http://localhost:4004/odata/v4/catalog/createTimesheetEntry
+Content-Type: application/json
+
+{
+  "timesheetID":"c8f7fc54-ec30-4e92-b8e6-399c4ee7fa5e",
+  "taskID":"TASK_ID",
+  "workDate":"2026-10-20",
+  "hours":8,
+  "billable":true
+}
+############################################################################
+# CREATE TIMESHEET
+############################################################################
+
+POST http://localhost:4004/odata/v4/catalog/createTimesheet
+Content-Type: application/json
+
+{
+  "employeeID":"11111111-1111-1111-1111-111111111111",
+  "approvedByID":"22222222-2222-2222-2222-222222222222",
+  "weekStartDate":"2026-10-19",
+  "weekEndDate":"2026-10-25",
+  "totalBillableHours":8,
+  "status":"Draft"
+}
+
+############################################################################
+# GET TIMESHEETS
+############################################################################
+
+GET http://localhost:4004/odata/v4/catalog/Timesheets
+
+############################################################################
+# CREATE TIMESHEET ENTRY
+# Replace timesheetID with actual Timesheet ID from GET above
+############################################################################
+
+POST http://localhost:4004/odata/v4/catalog/createTimesheetEntry
+Content-Type: application/json
+
+{
+  "timesheetID":"383b594f-acb1-4561-b726-a49da22c1b32",
+  "taskID":"33333333-3333-3333-3333-333333333333",
+  "workDate":"2026-10-20",
+  "hours":8,
+  "billable":true
+}
+
+############################################################################
+# GET TIMESHEET ENTRIES
+############################################################################
+
+GET http://localhost:4004/odata/v4/catalog/TimesheetEntries
+
+############################################################################
+# SUBMIT TIMESHEET
+############################################################################
+
+POST http://localhost:4004/odata/v4/catalog/submitTimesheet
+Content-Type: application/json
+
+{
+  "ID":"383b594f-acb1-4561-b726-a49da22c1b32"
+}
+
+############################################################################
+# VERIFY SUBMITTED
+############################################################################
+
+GET http://localhost:4004/odata/v4/catalog/Timesheets
+
+############################################################################
+# APPROVE TIMESHEET
+############################################################################
+
+POST http://localhost:4004/odata/v4/catalog/approveTimesheet
+Content-Type: application/json
+
+{
+  "ID":"383b594f-acb1-4561-b726-a49da22c1b32"
+}
+
+############################################################################
+# VERIFY APPROVED
+############################################################################
+
+GET http://localhost:4004/odata/v4/catalog/Timesheets
+
+############################################################################
+# CREATE SECOND TIMESHEET
+############################################################################
+
+POST http://localhost:4004/odata/v4/catalog/createTimesheet
+Content-Type: application/json
+
+{
+  "employeeID":"11111111-1111-1111-1111-333333333",
+  "approvedByID":"22222222-2222-2222-2222-33333333333",
+  "weekStartDate":"2026-10-26",
+  "weekEndDate":"2026-11-01",
+  "totalBillableHours":8,
+  "status":"Draft"
+}
+
+############################################################################
+# GET TIMESHEETS AGAIN
+############################################################################
+
+GET http://localhost:4004/odata/v4/catalog/Timesheets
+
+############################################################################
+# CREATE ENTRY FOR SECOND TIMESHEET
+# Replace SECOND_TIMESHEET_ID with actual ID
+############################################################################
+
+POST http://localhost:4004/odata/v4/catalog/createTimesheetEntry
+Content-Type: application/json
+
+{
+  "timesheetID":"615486f1-32b2-4a9d-8cb4-04281f6d2fed",
+  "taskID":"33333333-3333-3333-3333-444444444444",
+  "workDate":"2026-10-27",
+  "hours":6,
+  "billable":true
+}
+
+############################################################################
+# SUBMIT SECOND TIMESHEET
+############################################################################
+
+POST http://localhost:4004/odata/v4/catalog/submitTimesheet
+Content-Type: application/json
+
+{
+  "ID":"615486f1-32b2-4a9d-8cb4-04281f6d2fed"
+}
+
+############################################################################
+# REJECT SECOND TIMESHEET
+############################################################################
+
+POST http://localhost:4004/odata/v4/catalog/rejectTimesheet
+Content-Type: application/json
+
+{
+  "ID":"615486f1-32b2-4a9d-8cb4-04281f6d2fed",
+  "reason":"Incorrect billable hours entered"
+}
+
+############################################################################
+# VERIFY REJECTED
+############################################################################
+
+GET http://localhost:4004/odata/v4/catalog/Timesheets
+
+
+###
+
+GET http://localhost:4004/odata/v4/catalog/Budgets
+
+
+###
+
+POST http://localhost:4004/odata/v4/catalog/recalculateBudget
+Content-Type: application/json
+
+{
+  "ID":"9e1a77e8-4a8d-4384-b1fb-af1dc198d858"
+}
+
+
+###
+POST http://localhost:4004/odata/v4/catalog/createProject
+Content-Type: application/json
+
+{
+  "projectCode":"PRJ001",
+  "projectName":"Enterprise PSA",
+  "status":"Active",
+  "billingType":"T&M",
+  "startDate":"2026-10-01",
+  "endDate":"2027-03-31",
+  "plannedHours":1000,
+  "consumedHours":100,
+  "clientID":"1e9be86c-3d07-4bbf-93c8-c9bff91ecfa3",
+  "managerID":"bc21dffe-95b0-4339-99b3-81e11ccc1bd6"
+}
+###
+POST http://localhost:4004/odata/v4/catalog/createBudget
+Content-Type: application/json
+
+{
+  "projectID":"3bac3db7-0067-4d10-8987-7fc09631d405",
+  "budgetAmount":1000000,
+  "consumedAmount":0,
+  "remainingAmount":1000000,
+  "billingRateHr":100,
+  "currencyCode":"USD",
+  "budgetStatus":"OnTrack"
+}
+###
+GET http://localhost:4004/odata/v4/catalog/Projects
+
+###
+GET http://localhost:4004/odata/v4/catalog/Budgets
+
+###
+POST http://localhost:4004/odata/v4/catalog/recalculateBudget
+Content-Type: application/json
+
+{
+  "ID":"6b0a2207-3b72-4150-831a-8cc14b08ff01"
+}
+###
+POST http://localhost:4004/odata/v4/catalog/generateInvoice
+Content-Type: application/json
+
+{
+  "projectID":"3bac3db7-0067-4d10-8987-7fc09631d405",
+  "periodFrom":"2026-10-01",
+  "periodTo":"2026-10-31"
+}
+
+###
+GET http://localhost:4004/odata/v4/catalog/Invoices
+
+###
+GET http://localhost:4004/odata/v4/catalog/Invoices
+
+###
+POST http://localhost:4004/odata/v4/catalog/issueInvoice
+Content-Type: application/json
+
+{
+  "ID":"3ff57fe6-27b3-41d3-bbcc-22e7b57f6946"
+}
+
+###
+GET http://localhost:4004/odata/v4/catalog/Invoices
+
+###
+POST http://localhost:4004/odata/v4/catalog/markInvoicePaid
+Content-Type: application/json
+
+{
+  "ID":"3ff57fe6-27b3-41d3-bbcc-22e7b57f6946"
+}
+###
+GET http://localhost:4004/odata/v4/catalog/Invoices
+
+###
+
+
+GET http://localhost:4004/odata/v4/catalog/getBurnSummary(projectID=3bac3db7-0067-4d10-8987-7fc09631d405)
+
+
+###
+
+POST http://localhost:4004/odata/v4/catalog/createBudget
+Content-Type: application/json
+
+{
+  "projectID":"3bac3db7-0067-4d10-8987-7fc09631d405",
+  "budgetAmount":1000000,
+  "consumedAmount":100000,
+  "remainingAmount":900000,
+  "billingRateHr":100,
+  "currencyCode":"USD",
+  "budgetStatus":"OnTrack"
+}
+
+###
+
+POST http://localhost:4004/odata/v4/catalog/createMilestone
+Content-Type: application/json
+
+{
+  "projectID":"3bac3db7-0067-4d10-8987-7fc09631d405",
+  "milestoneName":"Phase 1 Development",
+  "startDate":"2026-10-01",
+  "endDate":"2026-11-30",
+  "completionPercent":40,
+  "status":"InProgress"
+}
+###
+GET http://localhost:4004/odata/v4/catalog/Budgets
+
+###
+POST http://localhost:4004/odata/v4/catalog/deleteBudget
+Content-Type: application/json
+
+{
+  "ID":"47a092b7-13c6-426e-97b9-a3b9a1fad8a8"
+}
+
+###
+
+GET http://localhost:4004/odata/v4/catalog/Projects?$expand=budget
+
+
+###
+
+POST http://localhost:4004/odata/v4/catalog/createMilestone
+Content-Type: application/json
+
+{
+  "projectID":"3bac3db7-0067-4d10-8987-7fc09631d405",
+  "milestoneName":"Requirements Gathering",
+  "startDate":"2026-10-01",
+  "endDate":"2026-10-15",
+  "completionPercent":100,
+  "status":"Completed"
+}
+###
+POST http://localhost:4004/odata/v4/catalog/createMilestone
+Content-Type: application/json
+
+{
+  "projectID":"3bac3db7-0067-4d10-8987-7fc09631d405",
+  "milestoneName":"CAP Development",
+  "startDate":"2026-10-16",
+  "endDate":"2026-11-15",
+  "completionPercent":70,
+  "status":"InProgress"
+}
+
+###
+POST http://localhost:4004/odata/v4/catalog/createInvoice
+Content-Type: application/json
+
+{
+  "invoiceNumber":"INV-1001",
+  "projectID":"3bac3db7-0067-4d10-8987-7fc09631d405",
+  "clientID":"PUT_REAL_CLIENT_ID",
+  "invoiceDate":"2026-10-21",
+  "dueDate":"2026-11-21",
+  "billableHours":100,
+  "totalAmount":100000,
+  "taxAmount":18000,
+  "currencyCode":"USD",
+  "paymentStatus":"Draft",
+  "status":"Draft"
+}
+
+
+###
+GET http://localhost:4004/odata/v4/catalog/Invoices
+
+###
+POST http://localhost:4004/odata/v4/catalog/Projects(3bac3db7-0067-4d10-8987-7fc09631d405)/CatalogService.recalculateBudget
+
+
+###
+POST http://localhost:4004/odata/v4/catalog/updateProject
+Content-Type: application/json
+
+{
+  "ID":"3bac3db7-0067-4d10-8987-7fc09631d405",
+  "projectName":"Enterprise PSA",
+  "status":"Active",
+  "billingType":"T&M",
+  "plannedHours":1000,
+  "consumedHours":500
+}
+
+###
+POST http://localhost:4004/odata/v4/catalog/createTimesheet
+Content-Type: application/json
+
+{
+  "employeeID":"37bf41b8-3dc4-47cb-a97c-1f401032ff7c",
+  "approvedByID":"bc21dffe-95b0-4339-99b3-81e11ccc1bd6",
+  "weekStartDate":"2026-10-26",
+  "weekEndDate":"2026-11-01",
+  "totalBillableHours":32,
+  "status":"Submitted"
+}
+###
+
+GET http://localhost:4004/odata/v4/catalog/$metadata
+Accept: application/xml
+
+###
+GET http://localhost:4004/odata/v4/catalog/Projects
+
+###
+GET http://localhost:4004/odata/v4/catalog/Milestones?$filter=project_ID%20eq%20PROJECT_UUID
+
+###
+GET http://localhost:4004/odata/v4/catalog/Milestones?$filter=project_ID%20eq%203bac3db7-0067-4d10-8987-7fc09631d405
+
+
+###
+GET http://localhost:4004/odata/v4/catalog/Tasks?$filter=milestone_ID%20eq%2091b5caa8-e494-4902-9a42-b4d1f2a5e438
+
+
+###
+POST http://localhost:4004/odata/v4/catalog/createTask
+Content-Type: application/json
+Accept: application/json
+
+{
+  "milestoneID": "91b5caa8-e494-4902-9a42-b4d1f2a5e438",
+  "taskName": "CAP Budget Integration Test",
+  "startDate": "2026-10-22",
+  "endDate": "2026-11-10",
+  "status": "InProgress",
+  "estimatedHours": 40,
+  "actualHours": 0
+}
+
+###
+GET http://localhost:4004/odata/v4/catalog/Employees
+
+
+###
+POST http://localhost:4004/odata/v4/catalog/createTimesheet
+Content-Type: application/json
+Accept: application/json
+
+{
+  "employeeID": "37bf41b8-3dc4-47cb-a97c-1f401032ff7c",
+  "approvedByID": null,
+  "invoiceID": null,
+  "weekStartDate": "2026-10-26",
+  "weekEndDate": "2026-11-01",
+  "totalBillableHours": 0,
+  "submittedDate": null,
+  "approvedDate": null,
+  "status": "Draft"
+}
+###
+POST http://localhost:4004/odata/v4/catalog/createTimesheetEntry
+Content-Type: application/json
+Accept: application/json
+
+{
+  "timesheetID": "5490bf49-ce82-4741-a9bc-e177bbec116d",
+  "taskID": "c4a6cf61-469e-4052-b266-e956d05b58c2",
+  "workDate": "2026-10-27",
+  "hours": 8,
+  "billable": true
+}
+###
+POST http://localhost:4004/odata/v4/catalog/Timesheets(5490bf49-ce82-4741-a9bc-e177bbec116d)/CatalogService.submitTimesheet
+Content-Type: application/json
+Accept: application/json
+
+{}
+
+###
+
+GET http://localhost:4004/odata/v4/catalog/Projects(3bac3db7-0067-4d10-8987-7fc09631d405)
+###
+GET http://localhost:4004/odata/v4/catalog/Tasks(c4a6cf61-469e-4052-b266-e956d05b58c2)
+
+###
+GET http://localhost:4004/odata/v4/catalog/Budgets?$filter=project_ID%20eq%203bac3db7-0067-4d10-8987-7fc09631d405
+
+###
+POST http://localhost:4004/odata/v4/catalog/Timesheets(5490bf49-ce82-4741-a9bc-e177bbec116d)/CatalogService.approveTimesheet
+Content-Type: application/json
+Accept: application/json
+
+{}
+###
+GET http://localhost:4004/odata/v4/catalog/Tasks(c4a6cf61-469e-4052-b266-e956d05b58c2)
+
+###
+GET http://localhost:4004/odata/v4/catalog/Projects(3bac3db7-0067-4d10-8987-7fc09631d405)
+
+###
+GET http://localhost:4004/odata/v4/catalog/Budgets(998a49d0-082f-435b-9c0e-6b16a8e1e9c6)
+
+###
+POST http://localhost:4004/odata/v4/catalog/Projects(3bac3db7-0067-4d10-8987-7fc09631d405)/CatalogService.recalculateBudget
+Content-Type: application/json
+
+###
+GET http://localhost:4004/odata/v4/catalog/Timesheets?$filter=employee_ID%20eq%2037bf41b8-3dc4-47cb-a97c-1f401032ff7c%20and%20status%20eq%20'Approved'&$expand=entries($expand=task($expand=milestone($expand=project)))
+
+###
+PATCH http://localhost:4004/odata/v4/catalog/Tasks(ccb1c37c-61f2-4f65-af34-1fde8682fed9)
+Content-Type: application/json
+Accept: application/json
+
+{
+  "milestone_ID": "91b5caa8-e494-4902-9a42-b4d1f2a5e438"
+}
+###
+POST http://localhost:4004/odata/v4/catalog/Projects(3bac3db7-0067-4d10-8987-7fc09631d405)/CatalogService.recalculateBudget
+Content-Type: application/json
+Accept: application/json
+
+{}
+###
+
+GET http://localhost:4004/odata/v4/catalog/Projects(3bac3db7-0067-4d10-8987-7fc09631d405)
+
+
+###
+PATCH http://localhost:4004/odata/v4/catalog/Managers(bc21dffe-95b0-4339-99b3-81e11ccc1bd6)
+Content-Type: application/json
+Accept: application/json
+
+{
+  "employee_ID": "37bf41b8-3dc4-47cb-a97c-1f401032ff7c",
+  "department_ID": null
+}
